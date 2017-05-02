@@ -1,3 +1,9 @@
+---
+services: active-directory-b2c
+platforms: node.js
+author: danieldobalian
+---
+
 # Node.js Web API with Azure AD B2C
 
 ## Steps to Run
