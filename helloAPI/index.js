@@ -18,8 +18,7 @@ var options = {
     clientID: clientID,
     policyName: policyName,
     isB2C: true,
-    validateIssuer: false,
-    scope: ['demo.read'],
+    validateIssuer: true,
     loggingLevel: 'info',
     passReqToCallback: false
 };
