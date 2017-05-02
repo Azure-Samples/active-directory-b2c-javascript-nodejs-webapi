@@ -4,7 +4,7 @@
 
 1. Clone the code.
 
-	```git clone https://github.com/Azure-Samples/active-directory-b2c-android-native-nodejs-webapi.git```
+	```git clone https://github.com/Azure-Samples/active-directory-b2c-javascript-nodejs-webapi```
 
 2. Make sure you've [installed Node](https://nodejs.org/en/download/).
 
