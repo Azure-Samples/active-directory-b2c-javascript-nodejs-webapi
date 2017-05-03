@@ -53,8 +53,8 @@ app.get("/hello",
             // Service relies on the name claim.  
             res.status(200).json({'name': claims['name']});
         } else {
-            console.log("Invalid Scope, 401");
-            res.status(401); 
+            console.log("Invalid Scope, 403");
+            res.status(403); 
         }
     }
 );
