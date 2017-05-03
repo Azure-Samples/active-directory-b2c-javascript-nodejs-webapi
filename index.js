@@ -54,7 +54,7 @@ app.get("/hello",
             res.status(200).json({'name': claims['name']});
         } else {
             console.log("Invalid Scope, 403");
-            res.status(403); 
+            res.status(403).json({'error': 'insufficient_scope'}); 
         }
     }
 );
