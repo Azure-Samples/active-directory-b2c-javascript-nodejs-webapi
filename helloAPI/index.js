@@ -49,8 +49,13 @@ app.get("/hello",
         console.log('User info: ', req.user);
         console.log('Validated claims: ', claims);
         
-        // Service relies on the name claim.  
-        res.status(200).json({'name': claims['name']});
+        if (claims['scp'].split(" ").indexOf("demo.read") >= 0) {
+            // Service relies on the name claim.  
+            res.status(200).json({'name': claims['name']});
+        } else {
+            console.log("Invalid Scope, 401");
+            res.status(401); 
+        }
     }
 );
 
