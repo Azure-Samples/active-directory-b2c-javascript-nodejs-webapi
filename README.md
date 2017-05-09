@@ -5,6 +5,7 @@ author: danieldobalian
 ---
 
 # Node.js Web API with Azure AD B2C
+This sample demonstrates how to protect a Node.js web API with Azure AD B2C using the Passport.js library. The code here is pre-configured with a registered client ID. If you register your own app, you will need to replace the client ID.
 
 ## Steps to Run
 
@@ -20,12 +21,13 @@ author: danieldobalian
 	npm install && npm update
 	```
 5. Run the Web API! By default it will run on `http://localhost:5000`.
-
 	```
 	node index.js
 	```
 
 ## Next Steps
+The `/hello` endpoint in this sample is protected so an authorized request to it requires an access token in the header. 
+You can make authorized requests to this web API using this [sample](https://github.com/Azure-Samples/active-directory-b2c-ios-swift-native-msal). Alternatively, you can [register your own app](https://apps.dev.microsoft.com) and point to this web API.
 
 Customize your user experience further by supporting more identity providers.  Checkout the docs belows to learn how to add additional providers: 
 
