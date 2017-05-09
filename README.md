@@ -27,7 +27,9 @@ This sample demonstrates how to protect a Node.js web API with Azure AD B2C usin
 
 ## Next Steps
 The `/hello` endpoint in this sample is protected so an authorized request to it requires an access token in the header. 
-You can make authorized requests to this web API using this [sample](https://github.com/Azure-Samples/active-directory-b2c-ios-swift-native-msal). Alternatively, you can [register your own app](https://apps.dev.microsoft.com) and point to this web API.
+You can make authorized requests to this web API using an [iOS App](https://github.com/Azure-Samples/active-directory-b2c-ios-swift-native-msal) or [Android App](https://github.com/Azure-Samples/active-directory-b2c-android-native-msal). Make sure to update the app configs if you want it to point to your local hello api. 
+
+Alternatively, you can [register your own app](https://apps.dev.microsoft.com) and point to this web API.
 
 Customize your user experience further by supporting more identity providers.  Checkout the docs belows to learn how to add additional providers: 
 
