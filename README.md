@@ -1,7 +1,7 @@
 ---
 services: active-directory-b2c
 platforms: node.js
-author: danieldobalian
+author: navyasric
 ---
 
 # Node.js Web API with Azure AD B2C
