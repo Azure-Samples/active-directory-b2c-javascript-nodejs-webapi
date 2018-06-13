@@ -1,6 +1,6 @@
 ---
 services: active-directory-b2c
-platforms: node.js
+platforms: nodejs
 author: navyasric
 ---
 
