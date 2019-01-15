@@ -31,9 +31,11 @@ We have deployed this API to Azure to allow testing without running it locally. 
 The `/hello` endpoint in this sample is protected so an authorized request to it requires an access token in the header. 
 You can make authorized requests to this web API using an [iOS App](https://github.com/Azure-Samples/active-directory-b2c-ios-swift-native-msal) or [Android App](https://github.com/Azure-Samples/active-directory-b2c-android-native-msal). Make sure to update the app configs if you want it to point to your local hello api. 
 
+- *IMPORTANT*: In the past, `login.microsoftonline.com` was used for the redirect URL, now you should be using `b2clogin.com`. For more information on changing redirect URL's [see here](https://docs.microsoft.com/en-us/azure/active-directory-b2c/b2clogin).
+
 Alternatively, you can [register your own app](https://apps.dev.microsoft.com) and point to this web API.
 
-Customize your user experience further by supporting more identity providers.  Checkout the docs belows to learn how to add additional providers: 
+Customize your user experience further by supporting more identity providers.  Checkout the docs below to learn how to add additional providers: 
 
 [Microsoft](https://docs.microsoft.com/en-us/azure/active-directory-b2c/active-directory-b2c-setup-msa-app)
 

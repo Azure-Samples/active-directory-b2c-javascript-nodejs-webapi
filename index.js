@@ -10,11 +10,12 @@ var BearerStrategy = require('passport-azure-ad').BearerStrategy;
 
 // TODO: Update the first 3 variables
 var tenantID = "fabrikamb2c.onmicrosoft.com";
+var tenantRedirectUrl = "login.microsoftonline.com";
 var clientID = "25eef6e4-c905-4a07-8eb4-0d08d5df8b3f";
 var policyName = "B2C_1_SUSI";
 
 var options = {
-    identityMetadata: "https://login.microsoftonline.com/" + tenantID + "/v2.0/.well-known/openid-configuration/",
+    identityMetadata: "https://" + tenantRedirectUrl + "/tfp/" + tenantID + "/v2.0/.well-known/openid-configuration/",
     clientID: clientID,
     policyName: policyName,
     isB2C: true,
