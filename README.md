@@ -1,8 +1,15 @@
 ---
-services: active-directory-b2c
-platforms: nodejs
-author: navyasric
+page_type: sample
+description: "This sample demonstrates how to protect a Node.js web API with Azure AD B2C using the Passport.js library."
+languages:
+- javascript
+- nodejs
+products:
+- azure
+- azure-active-directory
+urlFragment: nodejs-web-api-azure-ad
 ---
+
 
 # Node.js Web API with Azure AD B2C
 This sample demonstrates how to protect a Node.js web API with Azure AD B2C using the Passport.js library. The code here is pre-configured with a registered client ID. If you register your own app, you will need to replace the client ID.
