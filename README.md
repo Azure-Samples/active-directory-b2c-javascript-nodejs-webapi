@@ -21,17 +21,19 @@ We have deployed this API to Azure to allow testing without running it locally. 
 
 1. Clone the code.
 
-	```git clone https://github.com/Azure-Samples/active-directory-b2c-javascript-nodejs-webapi```
+	```bash
+	git clone https://github.com/Azure-Samples/active-directory-b2c-javascript-nodejs-webapi
+	```
 
 2. Make sure you've [installed Node](https://nodejs.org/en/download/).
 
 4. Install the node dependencies: 
 
-	```
+	```bash
 	npm install && npm update
 	```
 5. Run the Web API! By default it will run on `http://localhost:5000`.
-	```
+	```bash
 	node index.js
 	```
 
