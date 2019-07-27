@@ -12,6 +12,7 @@ urlFragment: nodejs-web-api-azure-ad
 
 
 # Node.js Web API with Azure AD B2C
+
 This sample demonstrates how to protect a Node.js web API with Azure AD B2C using the Passport.js library. The code here is pre-configured with a registered client ID. If you register your own app, you will need to replace the client ID.
 
 We have deployed this API to Azure to allow testing without running it locally. Checkout one of the apps in [Next Steps](https://github.com/Azure-Samples/active-directory-b2c-javascript-nodejs-webapi/blob/master/README.md#next-steps) to use it!
@@ -42,17 +43,17 @@ Alternatively, you can [register your own app](https://apps.dev.microsoft.com) a
 
 Customize your user experience further by supporting more identity providers.  Checkout the docs belows to learn how to add additional providers: 
 
-[Microsoft](https://docs.microsoft.com/en-us/azure/active-directory-b2c/active-directory-b2c-setup-msa-app)
+[Microsoft](https://docs.microsoft.com/azure/active-directory-b2c/active-directory-b2c-setup-msa-app)
 
-[Facebook](https://docs.microsoft.com/en-us/azure/active-directory-b2c/active-directory-b2c-setup-fb-app)
+[Facebook](https://docs.microsoft.com/azure/active-directory-b2c/active-directory-b2c-setup-fb-app)
 
-[Google](https://docs.microsoft.com/en-us/azure/active-directory-b2c/active-directory-b2c-setup-goog-app)
+[Google](https://docs.microsoft.com/azure/active-directory-b2c/active-directory-b2c-setup-goog-app)
 
-[Amazon](https://docs.microsoft.com/en-us/azure/active-directory-b2c/active-directory-b2c-setup-amzn-app)
+[Amazon](https://docs.microsoft.com/azure/active-directory-b2c/active-directory-b2c-setup-amzn-app)
 
-[LinkedIn](https://docs.microsoft.com/en-us/azure/active-directory-b2c/active-directory-b2c-setup-li-app)
+[LinkedIn](https://docs.microsoft.com/azure/active-directory-b2c/active-directory-b2c-setup-li-app)
 
 
 ## Questions & Issues
 
-Please file any questions or problems with the sample as a GitHub issue.  You can also post on Stackoverflow with the tag `azure-ad-b2c`. For OAuth2.0 library issues, please see note below. 
+Please file any questions or problems with the sample as a GitHub issue.  You can also post on Stack Overflow with the tag `azure-ad-b2c`. For OAuth2.0 library issues, please see note below. 
