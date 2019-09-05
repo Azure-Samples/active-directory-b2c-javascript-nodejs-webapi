@@ -13,10 +13,10 @@ var tenantName = "fabrikamb2c"
 var tenantID = tenantName + ".onmicrosoft.com";
 var clientID = "25eef6e4-c905-4a07-8eb4-0d08d5df8b3f";
 var policyName = "B2C_1_SUSI";
-var domain = "login.microsoftonline.com"
+var b2cDomain = ".b2clogin.com"
 
 var options = {
-    identityMetadata: "https://" + domain + "/" + tenantID + "/v2.0/.well-known/openid-configuration/",
+    identityMetadata: "https://" + tenantName + b2cDomain + "/" + tenantID + "/v2.0/.well-known/openid-configuration/",
     clientID: clientID,
     policyName: policyName,
     isB2C: true,
