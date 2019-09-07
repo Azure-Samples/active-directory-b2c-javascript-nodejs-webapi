@@ -9,19 +9,19 @@ var passport = require("passport");
 var BearerStrategy = require('passport-azure-ad').BearerStrategy;
 
 // TODO: Update the first 3 variables
-var tenantName = "fabrikamb2c"
-var tenantID = tenantName + ".onmicrosoft.com";
-var clientID = "25eef6e4-c905-4a07-8eb4-0d08d5df8b3f";
+var clientID = "93733604-cc77-4a3c-a604-87084dd55348";
+var b2cDomainHost = "fabrikamb2c.b2clogin.com";
+var tenantIdGuid = "775527ff-9a37-4307-8b3d-cc311f58d925";
 var policyName = "B2C_1_SUSI";
-var b2cDomain = ".b2clogin.com"
 
 var options = {
-    identityMetadata: "https://" + tenantName + b2cDomain + "/" + tenantID + "/v2.0/.well-known/openid-configuration/",
+    identityMetadata: "https://" + b2cDomainHost + "/" + tenantIdGuid + "/" + policyName + "/v2.0/.well-known/openid-configuration/",
     clientID: clientID,
     policyName: policyName,
     isB2C: true,
-    validateIssuer: true,
+    validateIssuer: false,
     loggingLevel: 'info',
+    loggingNoPII: false,
     passReqToCallback: false
 };
 
