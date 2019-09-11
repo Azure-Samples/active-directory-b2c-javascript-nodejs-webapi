@@ -13,9 +13,9 @@ var clientID = "93733604-cc77-4a3c-a604-87084dd55348";
 var b2cDomainHost = "fabrikamb2c.b2clogin.com";
 var tenantIdGuid = "775527ff-9a37-4307-8b3d-cc311f58d925";
 var policyName = "B2C_1_SUSI";
-
 var options = {
     identityMetadata: "https://" + b2cDomainHost + "/" + tenantIdGuid + "/" + policyName + "/v2.0/.well-known/openid-configuration/",
+
     clientID: clientID,
     policyName: policyName,
     isB2C: true,
