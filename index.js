@@ -1,7 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
 const passport = require("passport");
-const config = require('./apiConfig');
+const config = require('./config');
 const BearerStrategy = require('passport-azure-ad').BearerStrategy;
 
 // A simple check for clientID placeholder
@@ -38,7 +38,7 @@ app.get("/hello",
         console.log('User info: ', req.user);
         console.log('Validated claims: ', req.authInfo);
         
-        if (req.authInfo['scp'].split(" ").indexOf("demo.read") >= 0) {
+        if ('scp' in req.authInfo && req.authInfo['scp'].split(" ").indexOf("demo.read") >= 0) {
             // Service relies on the name claim.  
             res.status(200).json({'name': req.authInfo['name']});
         } else {

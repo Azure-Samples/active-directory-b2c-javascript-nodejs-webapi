@@ -22,7 +22,7 @@ To see how to call this web API from a client application, refer to this [B2C Si
 |-------------------|--------------------------------------------|
 | `process.json`   | Contains configuration parameters for logging via Morgan.  |
 | `index.js`   | Main application logic resides here.                     |
-| `apiConfig.js`   | Contains configuration parameters for the sample. |
+| `config.js`   | Contains configuration parameters for the sample. |
 | `.gitignore`      | Defines what to ignore at commit time.      |
 | `CHANGELOG.md`    | List of changes to the sample.             |
 | `CODE_OF_CONDUCT.md` | Code of Conduct information.            |
@@ -77,7 +77,7 @@ Follow the instructions at [register a Web API with Azure AD B2C](https://docs.m
 
 #### Step 4: Configure your application source code
 
-You can now fill in the variables in the `apiConfig.js` file of the Node.js Web API sample with the parameters you've obtained from the Azure Portal during the steps above.
+You can now fill in the variables in the `config.js` file of the Node.js Web API sample with the parameters you've obtained from the Azure Portal during the steps above.
 
 Configure the following variables:
 
