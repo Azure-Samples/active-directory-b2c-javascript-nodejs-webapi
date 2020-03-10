@@ -1,61 +1,46 @@
-// Authors:
-// Shane Oatman https://github.com/shoatman
-// Sunil Bandla https://github.com/sunilbandla
-// Daniel Dobalian https://github.com/danieldobalian
+const express = require("express");
+const morgan = require("morgan");
+const passport = require("passport");
+const config = require('./config');
+const BearerStrategy = require('passport-azure-ad').BearerStrategy;
 
-var express = require("express");
-var morgan = require("morgan");
-var passport = require("passport");
-var BearerStrategy = require('passport-azure-ad').BearerStrategy;
+// A simple check for clientID placeholder
+if (config.clientID === 'YOUR_CLIENT_ID') {
+    console.error("Please update 'options' with the client id (application id) of your application");
+    return;
+}
 
-/* Update these four variables with your values from the B2C portal */
-var clientID = "93733604-cc77-4a3c-a604-87084dd55348"; 
-var b2cDomainHost = "fabrikamb2c.b2clogin.com";
-var tenantIdGuid = "775527ff-9a37-4307-8b3d-cc311f58d925";
-var policyName = "B2C_1_SUSI";
-
-
-var options = {
-    identityMetadata: "https://" + b2cDomainHost + "/" + tenantIdGuid + "/" + policyName + "/v2.0/.well-known/openid-configuration/",
-
-    clientID: clientID,
-    policyName: policyName,
-    isB2C: true,
-    validateIssuer: false,
-    loggingLevel: 'info',
-    loggingNoPII: false,
-    passReqToCallback: false
-};
-
-var bearerStrategy = new BearerStrategy(options,
+const bearerStrategy = new BearerStrategy(config,
     function (token, done) {
         // Send user info using the second argument
         done(null, {}, token);
     }
 );
 
-var app = express();
-app.use(morgan('dev'));
+const app = express();
 
+app.use(morgan('dev'));
 app.use(passport.initialize());
+
 passport.use(bearerStrategy);
 
-app.use(function (req, res, next) {
+//enable CORS
+app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Authorization, Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
 
+// API endpoint
 app.get("/hello",
     passport.authenticate('oauth-bearer', {session: false}),
-    function (req, res) {
-        var claims = req.authInfo;
+    (req, res) => {
         console.log('User info: ', req.user);
-        console.log('Validated claims: ', claims);
+        console.log('Validated claims: ', req.authInfo);
         
-        if (claims['scp'].split(" ").indexOf("demo.read") >= 0) {
+        if ('scp' in req.authInfo && req.authInfo['scp'].split(" ").indexOf("demo.read") >= 0) {
             // Service relies on the name claim.  
-            res.status(200).json({'name': claims['name']});
+            res.status(200).json({'name': req.authInfo['name']});
         } else {
             console.log("Invalid Scope, 403");
             res.status(403).json({'error': 'insufficient_scope'}); 
@@ -63,7 +48,8 @@ app.get("/hello",
     }
 );
 
-var port = process.env.PORT || 5000;
-app.listen(port, function () {
+const port = process.env.PORT || 5000;
+
+app.listen(port, () => {
     console.log("Listening on port " + port);
 });
