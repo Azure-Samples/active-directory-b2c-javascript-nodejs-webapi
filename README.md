@@ -31,14 +31,13 @@ To see how to call this web API from a client application, refer to this [B2C Si
 | `package.json`    | Package manifest for npm.                   |
 | `README.md`       | This README file.                          |
 | `SECURITY.md`     | Security disclosures.                      |
-| `server.js`     | Implements a simple Node server to api endpoint(s).  |
 
 ## Steps to Run
 
 1. Clone the code.
 
 ```console
-git clone https://github.com/Azure-Samples/active-directory-javascript-nodejs-webapi-v2
+git clone https://github.com/Azure-Samples/active-directory-b2c-javascript-nodejs-webapi.git
 ```
 
 2. Make sure you've installed [Node.js](https://nodejs.org/en/download/).
