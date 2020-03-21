@@ -31,7 +31,6 @@ To see how to call this web API from a client application, refer to this [B2C Si
 | `process.json`       | Contains configuration parameters for logging via Morgan. |
 | `README.md`          | This README file.                                         |
 | `SECURITY.md`        | Security disclosures.                                     |
-``
 
 ## Steps to run
 
