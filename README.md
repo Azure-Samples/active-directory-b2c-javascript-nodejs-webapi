@@ -39,7 +39,7 @@ To see how to call this web API from a client application, refer to this [B2C Si
 
 ```console
 git clone https://github.com/Azure-Samples/active-directory-b2c-javascript-nodejs-webapi.git
-```config
+```
 
 2. Install [Node.js](https://nodejs.org/en/download/) if you don't already have it.
 
