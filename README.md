@@ -2,10 +2,11 @@
 page_type: sample
 languages:
 - javascript
-- node.js
+- nodejs
 products:
 - microsoft-identity-platform
 - azure-active-directory-b2c
+- passport-azure-ad
 description: "A sample demonstrating how to protect a Node.js web API with Azure AD B2C using the Passport.js library."
 urlFragment: "active-directory-b2c-javascript-nodejs-webapi"
 ---
