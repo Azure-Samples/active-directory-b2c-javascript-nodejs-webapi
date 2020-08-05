@@ -88,7 +88,7 @@ const policyName = "<Name of your sign in / sign up policy. Example: B2C_1_SUSI>
 
 > **NOTE**
 >
-> Developers using the [Azure China](https://docs.microsoft.com/azure/active-directory/develop/authentication-national-cloud) environment MUST use `<your-tenant-name>.b2clogin.cn` authority instead of `login.chinacloudapi.cn`.
+> Developers using the [Azure China](https://docs.microsoft.com/azure/active-directory/develop/authentication-national-cloud) environment MUST use `<your-tenant-name>.b2clogin.com` authority instead of `login.chinacloudapi.com`.
 >
 > To use `<your-tenant-name>.b2clogin.*`, you need set `validateIssuer: false`. Learn more about using [b2clogin.com](https://docs.microsoft.com/azure/active-directory-b2c/b2clogin).
 
