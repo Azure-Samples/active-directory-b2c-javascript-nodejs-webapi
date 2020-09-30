@@ -1,26 +1,34 @@
 const express = require("express");
 const morgan = require("morgan");
 const passport = require("passport");
-const config = require('./config');
+const auth = require('./auth');
+const session = require('express-session');
+
 const BearerStrategy = require('passport-azure-ad').BearerStrategy;
 
-// A simple check for clientID placeholder
-if (config.clientID === 'YOUR_CLIENT_ID') {
-    console.error("Please update 'options' with the client id (application id) of your application");
-    return;
+const options = {
+    identityMetadata: "https://" + b2cDomainHost + "/" + tenantId + "/" + policyName + "/v2.0/.well-known/openid-configuration/",
+    clientID: clientID,
+    policyName: policyName,
+    isB2C: true,
+    validateIssuer: false,
+    loggingLevel: 'info',
+    loggingNoPII: false,
+    passReqToCallback: false
 }
 
-const bearerStrategy = new BearerStrategy(config,
-    function (token, done) {
+const bearerStrategy = new BearerStrategy(options, (token, done) => {
         // Send user info using the second argument
-        done(null, {}, token);
+        done(null, { }, token);
     }
 );
 
 const app = express();
 
 app.use(morgan('dev'));
+app.use(session({ secret: 'randomly-generated_secret' }));
 app.use(passport.initialize());
+app.use(passport.session());
 
 passport.use(bearerStrategy);
 
@@ -35,16 +43,10 @@ app.use((req, res, next) => {
 app.get("/hello",
     passport.authenticate('oauth-bearer', {session: false}),
     (req, res) => {
-        console.log('User info: ', req.user);
         console.log('Validated claims: ', req.authInfo);
         
-        if ('scp' in req.authInfo && req.authInfo['scp'].split(" ").indexOf("demo.read") >= 0) {
-            // Service relies on the name claim.  
-            res.status(200).json({'name': req.authInfo['name']});
-        } else {
-            console.log("Invalid Scope, 403");
-            res.status(403).json({'error': 'insufficient_scope'}); 
-        }
+        // Service relies on the name claim.  
+        res.status(200).json({'name': req.authInfo['name']});
     }
 );
 
