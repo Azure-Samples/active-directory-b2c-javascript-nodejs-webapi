@@ -1,20 +1,18 @@
-const express = require("express");
-const morgan = require("morgan");
-const passport = require("passport");
-const auth = require('./auth');
-const session = require('express-session');
+const express = require('express');
+const morgan = require('morgan');
+const passport = require('passport');
+const config = require('./config.json');
 
 const BearerStrategy = require('passport-azure-ad').BearerStrategy;
 
 const options = {
-    identityMetadata: "https://" + b2cDomainHost + "/" + tenantId + "/" + policyName + "/v2.0/.well-known/openid-configuration/",
-    clientID: clientID,
-    policyName: policyName,
-    isB2C: true,
-    validateIssuer: false,
-    loggingLevel: 'info',
-    loggingNoPII: false,
-    passReqToCallback: false
+    identityMetadata: `https://${config.metadata.b2cDomain}/${config.credentials.tenantID}/${config.policies.policyName}/${config.metadata.version}/${config.metadata.discovery}`,
+    clientID: config.credentials.clientID,
+    policyName: config.policies.policyName,
+    isB2C: config.settings.isB2C,
+    validateIssuer: config.settings.validateIssuer,
+    loggingLevel: config.settings.loggingLevel,
+    passReqToCallback: config.settings.passReqToCallback
 }
 
 const bearerStrategy = new BearerStrategy(options, (token, done) => {
@@ -26,21 +24,20 @@ const bearerStrategy = new BearerStrategy(options, (token, done) => {
 const app = express();
 
 app.use(morgan('dev'));
-app.use(session({ secret: 'randomly-generated_secret' }));
+
 app.use(passport.initialize());
-app.use(passport.session());
 
 passport.use(bearerStrategy);
 
-//enable CORS
+//enable CORS (for testing only -remove in production/deployment)
 app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Authorization, Origin, X-Requested-With, Content-Type, Accept");
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Authorization, Origin, X-Requested-With, Content-Type, Accept');
     next();
 });
 
 // API endpoint
-app.get("/hello",
+app.get('/hello',
     passport.authenticate('oauth-bearer', {session: false}),
     (req, res) => {
         console.log('Validated claims: ', req.authInfo);
@@ -53,5 +50,5 @@ app.get("/hello",
 const port = process.env.PORT || 5000;
 
 app.listen(port, () => {
-    console.log("Listening on port " + port);
+    console.log('Listening on port ' + port);
 });
