@@ -7,7 +7,6 @@ products:
   - ms-graph
   - azure-active-directory  
   - azure-active-directory-b2c
-name: A sample demonstrating how to protect a Node.js web API with Azure AD B2C using the Passport.js library
 urlFragment: active-directory-b2c-javascript-nodejs-webapi
 description: "This sample demonstrates a JavaScript SPA application calling a Node.js Web Api that is secured using Azure AD B2C"
 ---
@@ -46,17 +45,11 @@ You will need a **client** application for calling the Web API. Choose:
 ## Contents
 
 | File/folder          | Description                                               |
-|:---------------------|:----------------------------------------------------------|
-| `.gitignore`         | Defines what to ignore at commit time.                    |
-| `CHANGELOG.md`       | List of changes to the sample.                            |
+|----------------------|-----------------------------------------------------------|
+| `AppCreationScripts` | Contains automation scripts for app registration.       |
 | `config.js`          | Contains configuration parameters for the sample.         |
-| `CONTRIBUTING.md`    | Guidelines for contributing to the sample.                |
 | `index.js`           | Main application logic resides here.                      |
-| `LICENSE`            | The license for the sample.                               |
-| `package.json`       | Package manifest for npm.                                 |
 | `process.json`       | Contains configuration parameters for logging via Morgan. |
-| `README.md`          | This README file.                                         |
-| `SECURITY.md`        | Security disclosures.                                     |
 
 ## Prerequisites
 
@@ -159,7 +152,7 @@ Call this web API from your client application. Upon an authorized call, the web
 
 ```javascript
       res.status(200).json({
-         'displayName': req.authInfo['displayName'],
+         'name': req.authInfo['name'],
          'issued-by': req.authInfo['iss'],
          'issued-for': req.authInfo['aud'],
          'scope': req.authInfo['scp']

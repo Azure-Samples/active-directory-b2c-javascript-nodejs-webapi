@@ -13,8 +13,7 @@
         "Id": "service",
         "Name": "active-directory-b2c-javascript-nodejs-webapi",
         "Kind": "WebApi",
-        "HomePage": "http://localhost:5000/",
-        "ReplyUrls": "http://localhost:5000/",
+        "HomePage": "http://localhost:5000/hello",
         "Audience": "AzureADAnyOrgandPersonalMicrosoftAccount"
       }
     ],
@@ -22,7 +21,7 @@
       {
         "App": "service",
         "SettingKind": "JSON",
-        "SettingFile": "\\..\\auth.json",
+        "SettingFile": "\\..\\config.json",
         "Mappings": [
           {
             "key": "clientID",
