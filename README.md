@@ -69,6 +69,8 @@ This sample uses a unified sign-up/sign-in policy. You can create [your own unif
 
 If you already have existing policies in your Azure AD B2C tenant, feel free to reuse those policies in this sample.
 
+![Overview](./ReadmeFiles/screenshot.png)
+
 #### Step 3: Register your own web API with Azure AD B2C
 
 Follow the steps in [Protect and grant access to a Node.js web API](https://docs.microsoft.com/azure/active-directory-b2c/tutorial-single-page-app-webapi) to register the web API application in your tenant, define scopes, and grant a web application access to the API. By following the steps in the tutorial, you define the scopes that your single-page application will request access tokens for.
