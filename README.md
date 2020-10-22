@@ -133,11 +133,9 @@ Open the project in your IDE (like Visual Studio or Visual Studio Code) to confi
 > In the steps below, "ClientID" is the same as "Application ID" or "AppId".
 
 1. Open the `config.json` file.
-1. Find the key `tenantName` and replace the existing value with your **Azure AD** tenant's name e.g. `<your-tenant-name>.onmicrosoft.com`.
+1. Find the key `tenantName` and replace the existing value with your **Azure AD** tenant's name e.g. `fabrikamb2c`.
 1. Find the key `clientID` and replace the existing value with the application ID (clientId) of the `active-directory-b2c-javascript-nodejs-webapi` application copied from the **Azure Portal**.
-1. Find the key `audience` and replace the existing value with the application ID (clientId) of the `active-directory-b2c-javascript-nodejs-webapi` application copied from the **Azure Portal**.
 1. Find the key `policyName` and replace the existing value with name of the policy you've created, e.g. `B2C_1_SUSI`.
-1. Find the key `b2cDomain` and replace the existing value with your tenant Domain name e.g. `<your-tenant-name>.b2clogin.com`.
 
 ## Running the sample
 
