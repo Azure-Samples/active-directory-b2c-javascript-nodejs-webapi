@@ -6,7 +6,7 @@ const config = require('./config.json');
 const BearerStrategy = require('passport-azure-ad').BearerStrategy;
 
 const options = {
-    identityMetadata: `https://${config.metadata.b2cDomain}/${config.credentials.tenantID}/${config.policies.policyName}/${config.metadata.version}/${config.metadata.discovery}`,
+    identityMetadata: `https://${config.metadata.b2cDomain}/${config.credentials.tenantName}/${config.policies.policyName}/${config.metadata.version}/${config.metadata.discovery}`,
     clientID: config.credentials.clientID,
     policyName: config.policies.policyName,
     isB2C: config.settings.isB2C,

@@ -21,11 +21,9 @@ description: "This sample demonstrates a JavaScript SPA application calling a No
  1. [Running the sample](#running-the-sample)
  1. [Explore the sample](#explore-the-sample)
  1. [About the code](#about-the-code)
- 1. [Deployment](#deployment)
  1. [More information](#more-information)
  1. [Community Help and Support](#community-help-and-support)
  1. [Contributing](#contributing)
- 1. [Code of Conduct](#code-of-conduct)
 
 ## Overview
 
@@ -38,7 +36,8 @@ You will need a **client** application for calling the Web API. Choose:
 ## Scenario
 
 1. The client application uses the [Microsoft Authentication Library for JavaScript (MSAL.js)](https://github.com/AzureAD/microsoft-authentication-library-for-js) to sign-in a user and obtain a JWT [Access Token](https://docs.microsoft.com/azure/active-directory/develop/access-tokens) from **Azure AD**.
-2. The **Access Token** is used as a *bearer* token to authenticate the user when calling this Web API.
+1. The **Access Token** is used as a *bearer* token to authenticate the user when calling this web API.
+1. The web API responds with the name of the user obtained from the token claims.
 
 ![Overview](./ReadmeFiles/topology.png)
 
@@ -46,7 +45,6 @@ You will need a **client** application for calling the Web API. Choose:
 
 | File/folder          | Description                                               |
 |----------------------|-----------------------------------------------------------|
-| `AppCreationScripts` | Contains automation scripts for app registration.       |
 | `config.js`          | Contains configuration parameters for the sample.         |
 | `index.js`           | Main application logic resides here.                      |
 | `process.json`       | Contains configuration parameters for logging via Morgan. |
@@ -135,9 +133,11 @@ Open the project in your IDE (like Visual Studio or Visual Studio Code) to confi
 > In the steps below, "ClientID" is the same as "Application ID" or "AppId".
 
 1. Open the `config.json` file.
-1. Find the key `clientID` and replace the existing value with the application ID (clientId) of the `active-directory-b2c-javascript-nodejs-webapi` application copied from the Azure portal.
-1. Find the key `tenantID` and replace the existing value with your Azure AD tenant ID.
-1. Find the key `audience` and replace the existing value with the application ID (clientId) of the `active-directory-b2c-javascript-nodejs-webapi` application copied from the Azure portal.
+1. Find the key `tenantName` and replace the existing value with your **Azure AD** tenant's name e.g. `<your-tenant-name>.onmicrosoft.com`.
+1. Find the key `clientID` and replace the existing value with the application ID (clientId) of the `active-directory-b2c-javascript-nodejs-webapi` application copied from the **Azure Portal**.
+1. Find the key `audience` and replace the existing value with the application ID (clientId) of the `active-directory-b2c-javascript-nodejs-webapi` application copied from the **Azure Portal**.
+1. Find the key `policyName` and replace the existing value with name of the policy you've created, e.g. `B2C_1_SUSI`.
+1. Find the key `b2cDomain` and replace the existing value with your tenant Domain name e.g. `<your-tenant-name>.b2clogin.com`.
 
 ## Running the sample
 
@@ -159,6 +159,8 @@ Call this web API from your client application. Upon an authorized call, the web
       });
 ```
 
+![Overview](./ReadmeFiles/screenshot.png)
+
 > :information_source: Did the sample not work for you as expected? Then please reach out to us using the [GitHub Issues](../../../../issues) page.
 
 ## About the code
@@ -173,35 +175,6 @@ Call this web API from your client application. Upon an authorized call, the web
             console.log('Validated claims: ', req.authInfo);
     );
 ```
-
-## Deployment
-
-### Deployment to Azure App Services
-
-There is one web project in this sample. To deploy it to **Azure App Services**, you'll need to:
-
-- create an **Azure App Service**
-- publish the projects to the **App Services**, and
-- update its client(s) to call the web site instead of the local environment.
-
-#### Create and publish `active-directory-b2c-javascript-nodejs-webapi` to an Azure App Services
-
-1. Sign in to the [Azure portal](https://portal.azure.com).
-1. Click `Create a resource` in the top left-hand corner, select **Web** --> **Web App**, and give your web site a name, for example, `active-directory-b2c-javascript-nodejs-webapi.azurewebsites.net`.
-1. Next, select the `Subscription`, `Resource Group`, `App service plan and Location`. `OS` will be **Windows** and `Publish` will be **Code**.
-1. Click `Create` and wait for the App Service to be created.
-1. Once you get the `Deployment succeeded` notification, then click on `Go to resource` to navigate to the newly created App service.
-1. Once the web site is created, locate it it in the **Dashboard** and click it to open **App Services** **Overview** screen.
-
-> :information_source: If you would like to use **VS Code Azure Tools** extension for deployment, [watch the tutorial](https://docs.microsoft.com/azure/developer/javascript/tutorial-vscode-azure-app-service-node-01) offered by Microsoft Docs.
-
-##### Update the Azure AD B2C app registration for `active-directory-b2c-javascript-nodejs-webapi`
-
-1. Navigate back to to the [Azure portal](https://portal.azure.com).
-In the left-hand navigation pane, select the **Azure Active Directory** service, and then select **App registrations (Preview)**.
-1. In the resulting screen, select the `active-directory-b2c-javascript-nodejs-webapi` application.
-1. From the *Branding* menu, update the **Home page URL**, to the address of your service, for example [https://active-directory-b2c-javascript-nodejs-webapi.azurewebsites.net](https://active-directory-b2c-javascript-nodejs-webapi-contoso.azurewebsites.net). Save the configuration.
-1. Add the same URL in the list of values of the *Authentication -> Redirect URIs* menu. If you have multiple redirect URIs, make sure that there a new entry using the App service's URI for each redirect URI.
 
 ## More information
 
