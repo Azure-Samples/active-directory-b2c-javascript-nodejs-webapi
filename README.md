@@ -157,8 +157,6 @@ Call this web API from your client application. Upon an authorized call, the web
       });
 ```
 
-![Overview](./ReadmeFiles/screenshot.png)
-
 > :information_source: Did the sample not work for you as expected? Then please reach out to us using the [GitHub Issues](../../../../issues) page.
 
 ## About the code
