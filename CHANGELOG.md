@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 10/01/2020
+
+* Token validation logic revised.
+
 ## 08/05/2020
 
 * Added issue & PR templates.

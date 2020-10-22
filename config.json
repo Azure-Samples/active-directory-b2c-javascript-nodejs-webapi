@@ -1,0 +1,23 @@
+{
+    "credentials": {
+        "tenantName": "fabrikamb2c",
+        "clientID": "93733604-cc77-4a3c-a604-87084dd55348"
+    },
+    "policies": {
+        "policyName": "B2C_1_SUSI"
+    },
+    "resource": {
+        "scope": ["demo.read"]
+    },
+    "metadata": {
+        "authority": "login.microsoftonline.com",
+        "discovery": ".well-known/openid-configuration",
+        "version": "v2.0"
+    },
+    "settings": {
+        "isB2C": true,
+        "validateIssuer": false,
+        "passReqToCallback": false,
+        "loggingLevel": "info"
+    }
+}
