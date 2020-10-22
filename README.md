@@ -149,12 +149,7 @@ Open the project in your IDE (like Visual Studio or Visual Studio Code) to confi
 Call this web API from your client application. Upon an authorized call, the web API will respond by:
 
 ```javascript
-      res.status(200).json({
-         'name': req.authInfo['name'],
-         'issued-by': req.authInfo['iss'],
-         'issued-for': req.authInfo['aud'],
-         'scope': req.authInfo['scp']
-      });
+      res.status(200).json({'name': req.authInfo['name']});
 ```
 
 > :information_source: Did the sample not work for you as expected? Then please reach out to us using the [GitHub Issues](../../../../issues) page.
