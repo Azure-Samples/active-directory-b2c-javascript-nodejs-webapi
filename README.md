@@ -154,6 +154,10 @@ Call this web API from your client application. Upon an authorized call, the web
 
 > :information_source: Did the sample not work for you as expected? Then please reach out to us using the [GitHub Issues](../../../../issues) page.
 
+## We'd love to hear from you
+
+Consider taking a moment to [share your experience with us](https://forms.office.com/Pages/ResponsePage.aspx?id=v4j5cvGGr0GRqy180BHbR73pcsbpbxNJuZCMKN0lURpURFBLRlBRMk9ZMjFDOFA4UVBVOE9TVExJSSQlQCN0PWcu).
+
 ## About the code
 
 ### Token Validation
