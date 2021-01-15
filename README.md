@@ -27,7 +27,7 @@ description: "This sample demonstrates a JavaScript SPA application calling a No
 
 ## Overview
 
-This sample demonstrates [how to protect a Node.js Web API](https://docs.microsoft.com/azure/active-directory/develop/quickstart-configure-app-expose-web-apis) with [Microsoft identity platform](https://docs.microsoft.com/azure/active-directory/develop/) and [Azure Active Directory (Azure AD)](https://docs.microsoft.com/azure/active-directory/fundamentals/active-directory-whatis) using the [passport-azure-ad](https://github.com/AzureAD/passport-azure-ad) library.
+This sample demonstrates [how to protect a Node.js Web API](https://docs.microsoft.com/azure/active-directory/develop/quickstart-configure-app-expose-web-apis) with [Microsoft identity platform](https://docs.microsoft.com/azure/active-directory/develop/) and [Azure AD B2C](https://docs.microsoft.com/azure/active-directory-b2c/overview) using the [passport-azure-ad](https://github.com/AzureAD/passport-azure-ad) library.
 
 You will need a **client** application for calling the Web API. Choose:
 
@@ -35,7 +35,7 @@ You will need a **client** application for calling the Web API. Choose:
 
 ## Scenario
 
-1. The client application uses the [Microsoft Authentication Library for JavaScript (MSAL.js)](https://github.com/AzureAD/microsoft-authentication-library-for-js) to sign-in a user and obtain a JWT [Access Token](https://docs.microsoft.com/azure/active-directory/develop/access-tokens) from **Azure AD**.
+1. The client application uses the [Microsoft Authentication Library for JavaScript (MSAL.js)](https://github.com/AzureAD/microsoft-authentication-library-for-js) to sign-in a user and obtain a JWT [Access Token](https://docs.microsoft.com/azure/active-directory/develop/access-tokens) from **Azure AD B2C**.
 1. The **Access Token** is used as a *bearer* token to authenticate the user when calling this web API.
 1. The web API responds with the name of the user obtained from the token claims.
 
@@ -108,18 +108,15 @@ Please refer to: [Tutorial: Add identity providers to your applications in Azure
 1. Select **Register** to create the application.
 1. In the app's registration screen, find and note the **Application (client) ID**. You use this value in your app's configuration file(s) later in your code.
 1. Select **Save** to save your changes.
-1. In the app's registration screen, select the **Expose an API** blade to the left to open the page where you can declare the parameters to expose this app as an Api for which client applications can obtain [access tokens](https://docs.microsoft.com/azure/active-directory/develop/access-tokens) for.
-The first thing that we need to do is to declare the unique [resource](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow) URI that the clients will be using to obtain access tokens for this Api. To declare an resource URI, follow the following steps:
+1. In the app's registration screen, select the **Expose an API** blade to the left to open the page where you can declare the parameters to expose this app as an API for which client applications can obtain [access tokens](https://docs.microsoft.com/azure/active-directory/develop/access-tokens) for.
+The first thing that we need to do is to declare the unique [resource](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow) URI that the clients will be using to obtain access tokens for this API. To declare an resource URI, follow the following steps:
    - Click `Set` next to the **Application ID URI** to generate a URI that is unique for this app.
    - For this sample, accept the proposed Application ID URI (api://{clientId}) by selecting **Save**.
-1. All Apis have to publish a minimum of one [scope](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow#request-an-authorization-code) for the client's to obtain an access token successfully. To publish a scope, follow the following steps:
+1. All APIs have to publish a minimum of one [scope](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow#request-an-authorization-code) for the client's to obtain an access token successfully. To publish a scope, follow the following steps:
    - Select **Add a scope** button open the **Add a scope** screen and Enter the values as indicated below:
         - For **Scope name**, use `demo.read`.
-        - Select **Admins and users** options for **Who can consent?**
         - For **Admin consent display name** type `Access active-directory-b2c-javascript-nodejs-webapi`
         - For **Admin consent description** type `Allows the app to access active-directory-b2c-javascript-nodejs-webapi as the signed-in user.`
-        - For **User consent display name** type `Access active-directory-b2c-javascript-nodejs-webapi`
-        - For **User consent description** type `Allow the application to access active-directory-b2c-javascript-nodejs-webapi on your behalf.`
         - Keep **State** as **Enabled**
         - Click on the **Add scope** button on the bottom to save this scope.
 1. On the right side menu, select the `Manifest` blade.
@@ -133,7 +130,7 @@ Open the project in your IDE (like Visual Studio or Visual Studio Code) to confi
 > In the steps below, "ClientID" is the same as "Application ID" or "AppId".
 
 1. Open the `config.json` file.
-1. Find the key `tenantName` and replace the existing value with your **Azure AD** tenant's name e.g. `fabrikamb2c`.
+1. Find the key `tenantName` and replace the existing value with your **Azure AD B2C** tenant's name e.g. `fabrikamb2c`.
 1. Find the key `clientID` and replace the existing value with the application ID (clientId) of the `active-directory-b2c-javascript-nodejs-webapi` application copied from the **Azure Portal**.
 1. Find the key `policyName` and replace the existing value with name of the policy you've created, e.g. `B2C_1_SUSI`.
 
@@ -165,7 +162,7 @@ Consider taking a moment to [share your experience with us](https://forms.office
 [passport-azure-ad](https://github.com/AzureAD/passport-azure-ad) validates the token against the `issuer`, `scope` and `audience` claims (defined in `BearerStrategy` constructor) using the `passport.authenticate()` API:
 
 ```javascript
-    app.get('/api', passport.authenticate('oauth-bearer', { session: false }),
+    app.get('/hello', passport.authenticate('oauth-bearer', { session: false }),
         (req, res) => {
             console.log('Validated claims: ', req.authInfo);
     );
