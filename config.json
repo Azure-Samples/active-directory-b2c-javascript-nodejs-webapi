@@ -16,7 +16,7 @@
     },
     "settings": {
         "isB2C": true,
-        "validateIssuer": false,
+        "validateIssuer": true,
         "passReqToCallback": false,
         "loggingLevel": "info"
     }
