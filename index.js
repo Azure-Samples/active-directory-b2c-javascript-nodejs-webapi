@@ -21,14 +21,14 @@ const options = {
 }
 
 const bearerStrategy = new BearerStrategy(options, (token, done) => {
-        // Send user info using the second argument
-        done(null, { }, token);
-    }
+    // Send user info using the second argument
+    done(null, {}, token);
+}
 );
 
 const app = express();
 
-app.use(express.json()); 
+app.use(express.json());
 
 //enable CORS (for testing only -remove in production/deployment)
 app.use(cors({
@@ -46,18 +46,20 @@ app.use('/api/todolist', todolist);
 
 // API endpoint
 app.get('/hello',
-    passport.authenticate('oauth-bearer', {session: false}),
+    passport.authenticate('oauth-bearer', { session: false }),
     (req, res) => {
         console.log('Validated claims: ', req.authInfo);
-    
-          
+
+
         // Service relies on the name claim.  
-        res.status(200).json({'name': req.authInfo['name']});
+        res.status(200).json({ 'name': req.authInfo['name'] });
     }
 );
 
 // API anonymous endpoint
-app.get('/public', (req, res) => res.send( {'date': new Date() } ));
+app.get('/public', (req, res) => res.send({ 'date': new Date() }));
+
+app.get('/', (req, res) => res.send({ 'message': 'hello' }));
 
 const port = process.env.PORT || 5000;
 
