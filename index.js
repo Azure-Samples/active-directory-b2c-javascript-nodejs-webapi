@@ -10,7 +10,8 @@ const BearerStrategy = require('passport-azure-ad').BearerStrategy;
 global.global_todos = [];
 
 const options = {
-    identityMetadata: `https://${config.credentials.tenantName}.b2clogin.com/${config.credentials.tenantName}.onmicrosoft.com/${config.policies.policyName}/${config.metadata.version}/${config.metadata.discovery}`,
+    // identityMetadata: `https://${config.credentials.tenantName}.b2clogin.com/${config.credentials.tenantName}.onmicrosoft.com/${config.policies.policyName}/${config.metadata.version}/${config.metadata.discovery}`,
+    identityMetadata: `https://login.microsoftonline.com/${config.credentials.tenantID}/${config.metadata.version}/${config.metadata.discovery}`,
     clientID: config.credentials.clientID,
     audience: config.credentials.clientID,
     policyName: config.policies.policyName,
