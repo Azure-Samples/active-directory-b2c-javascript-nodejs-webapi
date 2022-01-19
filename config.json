@@ -11,7 +11,7 @@
     "scope": ["openid", "User.Read"]
   },
   "metadata": {
-    "authority": "https://login.microsoftonline.com/common/",
+    "authority": "login.microsoftonline.com",
     "discovery": ".well-known/openid-configuration",
     "version": "v2.0"
   },
