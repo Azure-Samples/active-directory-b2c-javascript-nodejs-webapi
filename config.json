@@ -1,6 +1,6 @@
 {
   "credentials": {
-    "tenantName": "testb2cmichalp",
+    "tenantName": "testb2cmichalp.onmicrosoft.com",
     "clientID": "69c988f8-a944-44e2-9adf-53346bbee5f0"
   },
   "policies": {
@@ -16,7 +16,7 @@
   },
   "settings": {
     "isB2C": true,
-    "validateIssuer": true,
+    "validateIssuer": false,
     "passReqToCallback": false,
     "loggingLevel": "info"
   }
