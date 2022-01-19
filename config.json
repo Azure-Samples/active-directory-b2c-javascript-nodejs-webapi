@@ -10,7 +10,7 @@
     "scope": ["demo.read"]
   },
   "metadata": {
-    "authority": "login.microsoftonline.com",
+    "authority": "https://login.microsoftonline.com/common/",
     "discovery": ".well-known/openid-configuration",
     "version": "v2.0"
   },
