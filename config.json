@@ -1,6 +1,7 @@
 {
   "credentials": {
     "tenantName": "testb2cmichalp",
+    "tenantID": "5de22475-846c-4854-8b0d-8c5496179bd9",
     "clientID": "69c988f8-a944-44e2-9adf-53346bbee5f0"
   },
   "policies": {
