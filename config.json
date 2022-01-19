@@ -7,7 +7,7 @@
     "policyName": "B2C_1_selfserv1"
   },
   "resource": {
-    "scope": ["demo.read"]
+    "scope": ["openid", "User.Read"]
   },
   "metadata": {
     "authority": "https://login.microsoftonline.com/common/",
