@@ -1,24 +1,27 @@
 {
   "credentials": {
-    "tenantName": "testb2cmichalp",
-    "tenantID": "5de22475-846c-4854-8b0d-8c5496179bd9",
-    "clientID": "69c988f8-a944-44e2-9adf-53346bbee5f0"
+      "tenantName": "testb2cmichalp.onmicrosoft.com",
+      "clientID": "e762925f-d7de-407c-b322-4f6f032687bd"
   },
   "policies": {
-    "policyName": "B2C_1_selfserv1"
-  },
-  "resource": {
-    "scope": ["openid", "User.Read"]
+      "policyName": "B2C_1_susi"
   },
   "metadata": {
-    "authority": "login.microsoftonline.com",
-    "discovery": ".well-known/openid-configuration",
-    "version": "v2.0"
+      "b2cDomain": "testb2cmichalp.b2clogin.com",
+      "authority": "login.microsoftonline.com",
+      "discovery": ".well-known/openid-configuration",
+      "version": "v2.0"
   },
   "settings": {
-    "isB2C": true,
-    "validateIssuer": false,
-    "passReqToCallback": false,
-    "loggingLevel": "info"
+      "isB2C": true,
+      "validateIssuer": false,
+      "passReqToCallback": false,
+      "loggingLevel": "info"
+  },
+  "protectedRoutes": {
+      "hello": {
+          "endpoint": "/hello",
+          "scopes": ["demo.read"]
+      }
   }
 }

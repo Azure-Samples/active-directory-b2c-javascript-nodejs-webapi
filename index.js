@@ -2,24 +2,23 @@ const express = require('express');
 const morgan = require('morgan');
 const passport = require('passport');
 const config = require('./config.json');
-const todolist = require('./todolist');
 const cors = require('cors');
 const BearerStrategy = require('passport-azure-ad').BearerStrategy;
 
 
-global.global_todos = [];
 
 const options = {
-    // identityMetadata: `https://${config.credentials.tenantName}.b2clogin.com/${config.credentials.tenantName}.onmicrosoft.com/${config.policies.policyName}/${config.metadata.version}/${config.metadata.discovery}`,
-    identityMetadata: `https://login.microsoftonline.com/${config.credentials.tenantID}/${config.metadata.version}/${config.metadata.discovery}`,
+    identityMetadata: `https://${config.metadata.b2cDomain}/${config.credentials.tenantName}/${config.policies.policyName}/${config.metadata.version}/${config.metadata.discovery}`,
     clientID: config.credentials.clientID,
     audience: config.credentials.clientID,
     policyName: config.policies.policyName,
     isB2C: config.settings.isB2C,
     validateIssuer: config.settings.validateIssuer,
     loggingLevel: config.settings.loggingLevel,
-    passReqToCallback: config.settings.passReqToCallback
+    passReqToCallback: config.settings.passReqToCallback,
+    scope: config.protectedRoutes.hello.scopes
 }
+
 
 const bearerStrategy = new BearerStrategy(options, (token, done) => {
     console.log({token})// Send user info using the second argument
@@ -42,8 +41,6 @@ app.use(passport.initialize());
 
 passport.use(bearerStrategy);
 
-// To do list endpoints
-app.use('/api/todolist', todolist);
 
 // API endpoint
 app.get('/hello',
@@ -62,7 +59,7 @@ app.get('/public', (req, res) => res.send({ 'date': new Date() }));
 
 app.get('/', (req, res) => res.send({ 'message': 'hello' }));
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 4040;
 
 app.listen(port, () => {
     console.log('Listening on port ' + port);
