@@ -21,7 +21,7 @@ const options = {
 
 
 const bearerStrategy = new BearerStrategy(options, (token, done) => {
-    console.log({token})// Send user info using the second argument
+    console.log('bearerStrategy', { token })// Send user info using the second argument
     done(null, {}, token);
 }
 );
@@ -50,7 +50,7 @@ app.get('/hello',
 
 
         // Service relies on the name claim.  
-        res.status(200).json({ 'name': req.authInfo['name'] });
+        res.status(200).send(JSON.stringify({ 'azp': req.authInfo['azp'] }));
     }
 );
 
