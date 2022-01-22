@@ -42,18 +42,18 @@ app.use(passport.initialize());
 passport.use(bearerStrategy);
 
 app.post("/signUpConnector", (req, res) => {
-  console.log('/signUpConnector', JSON.stringify(req));
+  console.log('/signUpConnector', req);
   res.send({ version: API_VERSION, action: "Continue" });
 });
 
 app.post("/beforeCreatingUserConnector", (req, res) => {
-  console.log('/beforeCreatingUserConnector', JSON.stringify(req));
+  console.log('/beforeCreatingUserConnector', req);
   res.send({ version: API_VERSION, action: "Continue" });
 
 });
 
 app.post("/beforeAppClaimsConnector", (req, res) => {
-  console.log('/beforeAppClaimsConnector', JSON.stringify(req));
+  console.log('/beforeAppClaimsConnector', req);
   res.send({ version: API_VERSION, action: "Continue" });
 
 });
