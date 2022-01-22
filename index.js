@@ -17,6 +17,8 @@ const options = {
   scope: config.protectedRoutes.hello.scopes,
 };
 
+const API_VERSION = "1.0.0";
+
 const bearerStrategy = new BearerStrategy(options, (token, done) => {
   console.log("bearerStrategy", { token }); // Send user info using the second argument
   done(null, {}, token);
@@ -40,15 +42,20 @@ app.use(passport.initialize());
 passport.use(bearerStrategy);
 
 app.post("/signUpConnector", (req, res) => {
-	console.log('/signUpConnector', JSON.stringify(res));
+  console.log('/signUpConnector', JSON.stringify(res));
+  res.send({ version: API_VERSION, action: "Continue" });
 });
 
 app.post("/beforeCreatingUserConnector", (req, res) => {
-	console.log('/beforeCreatingUserConnector', JSON.stringify(res));
+  console.log('/beforeCreatingUserConnector', JSON.stringify(res));
+  res.send({ version: API_VERSION, action: "Continue" });
+
 });
 
 app.post("/beforeAppClaimsConnector", (req, res) => {
-	console.log('/beforeAppClaimsConnector', JSON.stringify(res));
+  console.log('/beforeAppClaimsConnector', JSON.stringify(res));
+  res.send({ version: API_VERSION, action: "Continue" });
+
 });
 
 // API endpoint
