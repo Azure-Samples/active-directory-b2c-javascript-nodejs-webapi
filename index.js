@@ -39,15 +39,15 @@ app.use(passport.initialize());
 
 passport.use(bearerStrategy);
 
-app.get("/signUpConnector", (req, res) => {
+app.post("/signUpConnector", (req, res) => {
 	console.log('/signUpConnector', JSON.stringify(res));
 });
 
-app.get("/beforeCreatingUserConnector", (req, res) => {
+app.post("/beforeCreatingUserConnector", (req, res) => {
 	console.log('/beforeCreatingUserConnector', JSON.stringify(res));
 });
 
-app.get("/beforeAppClaimsConnector", (req, res) => {
+app.post("/beforeAppClaimsConnector", (req, res) => {
 	console.log('/beforeAppClaimsConnector', JSON.stringify(res));
 });
 
