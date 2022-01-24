@@ -4,6 +4,10 @@ const passport = require("passport");
 const config = require("./config.json");
 const cors = require("cors");
 const BearerStrategy = require("passport-azure-ad").BearerStrategy;
+const {
+  executeSelectStatementWithEmail,
+  executeInsertStatement,
+} = require("database");
 
 const options = {
   identityMetadata: `https://${config.metadata.b2cDomain}/${config.credentials.tenantName}/${config.policies.policyName}/${config.metadata.version}/${config.metadata.discovery}`,
@@ -105,6 +109,17 @@ app.get("/public", (req, res) => res.send({ date: new Date() }));
 app.get("/testEnvVar", (req, res) =>
   res.send({ date: process.env.TEST_ENV_VAR, test: 1 })
 );
+
+app.get("/testDB", (req, res) =>
+  res.send({
+    date: JSON.stringify(
+      executeSelectStatementWithEmail("michalp33@outlook.com")
+    ),
+    test: 1,
+  })
+);
+
+executeSelectStatementWithEmail;
 
 app.get("/", (req, res) => res.send({ message: "hello" }));
 
