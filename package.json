@@ -16,8 +16,7 @@
     "express": "^4.14.0",
     "morgan": "^1.7.0",
     "passport": "^0.4.1",
-    "passport-azure-ad": "^4.2.1",
-    "tedious": "^14.1.0"
+    "passport-azure-ad": "^4.2.1"
   },
   "main": "index.js",
   "repository": {
