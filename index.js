@@ -102,6 +102,10 @@ app.get(
 // API anonymous endpoint
 app.get("/public", (req, res) => res.send({ date: new Date() }));
 
+app.get("/testEnvVar", (req, res) =>
+  res.send({ date: process.env.TEST_ENV_VAR })
+);
+
 app.get("/", (req, res) => res.send({ message: "hello" }));
 
 const port = process.env.PORT || 4040;
