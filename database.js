@@ -23,15 +23,12 @@ connection.on("connect", function (err) {
     console.log("Error: ", err);
   }
   // If no error, then good to go...
-  executeSelectStatementWithEmail("michalp33@outlook.com").then((result) =>
-    console.log(result)
-  );
 });
 
 // Initialize the connection.
 connection.connect();
 
-export function executeSelectStatementWithEmail(email) {
+function executeSelectStatementWithEmail(email) {
   return new Promise((resolve, reject) => {
     let request = new Request(
       `select * from users where email='${email}'`,
@@ -56,7 +53,7 @@ export function executeSelectStatementWithEmail(email) {
   });
 }
 
-export function executeInsertStatement(name, email) {
+function executeInsertStatement(name, email) {
   return new Promise((resolve, reject) => {
     let request = new Request(
       `insert into users (name, email) values (N'${name}', N'${email}');`,
@@ -74,3 +71,6 @@ export function executeInsertStatement(name, email) {
     connection.execSql(request);
   });
 }
+
+
+module.exports = {executeSelectStatementWithEmail, executeInsertStatement};

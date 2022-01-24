@@ -119,7 +119,6 @@ app.get("/testDB", (req, res) =>
   })
 );
 
-executeSelectStatementWithEmail;
 
 app.get("/", (req, res) => res.send({ message: "hello" }));
 
