@@ -110,15 +110,13 @@ app.get("/testEnvVar", (req, res) =>
   res.send({ date: process.env.TEST_ENV_VAR, test: 1 })
 );
 
-app.get("/testDB", (req, res) =>
+app.get("/testDB", async (req, res) => {
+  const r = await executeSelectStatementWithEmail("michalp33@outlook.com");
   res.send({
-    date: JSON.stringify(
-      executeSelectStatementWithEmail("michalp33@outlook.com")
-    ),
+    data: r,
     test: 1,
-  })
-);
-
+  });
+});
 
 app.get("/", (req, res) => res.send({ message: "hello" }));
 
