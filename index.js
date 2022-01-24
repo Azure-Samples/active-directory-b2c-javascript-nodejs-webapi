@@ -103,7 +103,7 @@ app.get(
 app.get("/public", (req, res) => res.send({ date: new Date() }));
 
 app.get("/testEnvVar", (req, res) =>
-  res.send({ date: process.env.TEST_ENV_VAR })
+  res.send({ date: process.env.TEST_ENV_VAR, test: 1 })
 );
 
 app.get("/", (req, res) => res.send({ message: "hello" }));
