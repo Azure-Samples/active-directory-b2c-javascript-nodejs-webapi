@@ -7,7 +7,7 @@ const BearerStrategy = require("passport-azure-ad").BearerStrategy;
 const {
   executeSelectStatementWithEmail,
   executeInsertStatement,
-} = require("database");
+} = require("./database");
 
 const options = {
   identityMetadata: `https://${config.metadata.b2cDomain}/${config.credentials.tenantName}/${config.policies.policyName}/${config.metadata.version}/${config.metadata.discovery}`,
