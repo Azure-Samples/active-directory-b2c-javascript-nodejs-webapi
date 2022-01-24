@@ -42,21 +42,50 @@ app.use(passport.initialize());
 passport.use(bearerStrategy);
 
 app.post("/signUpConnector", (req, res) => {
-  console.log('/signUpConnector', req);
+  console.log("/signUpConnector", req);
   res.send({ version: API_VERSION, action: "Continue" });
 });
 
 app.post("/beforeCreatingUserConnector", (req, res) => {
-  console.log('/beforeCreatingUserConnector', req);
+  console.log("/beforeCreatingUserConnector", req);
   res.send({ version: API_VERSION, action: "Continue" });
-
 });
 
 app.post("/beforeAppClaimsConnector", (req, res) => {
-  console.log('/beforeAppClaimsConnector', req);
+  console.log("/beforeAppClaimsConnector", req);
   res.send({ version: API_VERSION, action: "Continue" });
-
 });
+
+app.get(
+  "/token",
+  passport.authenticate("oauth-bearer", { session: false }),
+  (req, res) => {
+    console.log("/token", req.authInfo);
+
+    // Service relies on the name claim.
+    res.status(200).send(
+      JSON.stringify({
+        token: Math.floor(Math.random() * 9999999999999999).toString(36),
+      })
+    );
+  }
+);
+
+app.get(
+  "/usage",
+  passport.authenticate("oauth-bearer", { session: false }),
+  (req, res) => {
+    console.log("/token", req.authInfo);
+
+    // Service relies on the name claim.
+    res.status(200).send(
+      JSON.stringify({
+        usage: Math.floor(Math.random() * 99),
+        isSub: Math.random() < 0.5,
+      })
+    );
+  }
+);
 
 // API endpoint
 app.get(
