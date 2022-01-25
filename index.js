@@ -95,7 +95,7 @@ app.get(
   "/usage",
   passport.authenticate("oauth-bearer", { session: false }),
   (req, res) => {
-    console.log("/token", req.authInfo);
+    console.log("/usage", req.authInfo);
 
     // Service relies on the name claim.
     res.status(200).send(
