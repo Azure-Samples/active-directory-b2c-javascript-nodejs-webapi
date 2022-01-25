@@ -52,18 +52,27 @@ app.post("/signUpConnector", (req, res) => {
 });
 
 app.post("/beforeCreatingUserConnector", async (req, res) => {
+  /* var header = req.headers["authorization"] || "", // get the header
+    token = header.split(/\s+/).pop() || "", // and the encoded auth token
+    auth = new Buffer.from(token, "base64").toString(), // convert from base64
+    parts = auth.split(/:/), // split on colon
+    username = parts[0],
+    password = parts[1];
+		*/
+
+  res.send({ version: API_VERSION, action: "Continue" });
+
   console.log("/beforeCreatingUserConnector", req);
 
-  console.log("sending user to database", res.body.displayName, res.body.email);
-  await executeInsertStatement(res.body.displayName, res.body.email);
+  console.log("sending user to database", req.body.displayName, req.body.email);
+  await executeInsertStatement(req.body.displayName, req.body.email);
 
-  console.log("sending user to chargify", res.body.displayName, res.body.email);
+  console.log("sending user to chargify", req.body.displayName, req.body.email);
   await sendUserToChargify(
-    res.body.email,
-    res.body.givenName,
-    res.body.surname
+    req.body.email,
+    req.body.givenName,
+    req.body.surname
   );
-  res.send({ version: API_VERSION, action: "Continue" });
 });
 
 app.post("/beforeAppClaimsConnector", (req, res) => {
