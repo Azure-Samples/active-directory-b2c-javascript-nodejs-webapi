@@ -8,6 +8,7 @@ const {
   executeSelectStatementWithEmail,
   executeInsertStatement,
 } = require("./database");
+const { sendUserToChargify } = require("./chargifyHandler");
 
 const options = {
   identityMetadata: `https://${config.metadata.b2cDomain}/${config.credentials.tenantName}/${config.policies.policyName}/${config.metadata.version}/${config.metadata.discovery}`,
@@ -50,14 +51,29 @@ app.post("/signUpConnector", (req, res) => {
   res.send({ version: API_VERSION, action: "Continue" });
 });
 
-app.post("/beforeCreatingUserConnector", (req, res) => {
+app.post("/beforeCreatingUserConnector", async (req, res) => {
   console.log("/beforeCreatingUserConnector", req);
+
+  console.log("sending user to database", res.body.displayName, res.body.email);
+  await executeInsertStatement(res.body.displayName, res.body.email);
+
+  console.log("sending user to chargify", res.body.displayName, res.body.email);
+  await sendUserToChargify(
+    res.body.email,
+    res.body.givenName,
+    res.body.surname
+  );
   res.send({ version: API_VERSION, action: "Continue" });
 });
 
 app.post("/beforeAppClaimsConnector", (req, res) => {
   console.log("/beforeAppClaimsConnector", req);
   res.send({ version: API_VERSION, action: "Continue" });
+});
+
+app.post("/chargifyEndpoint", (req, res) => {
+  console.log("/chargifyEndpoint", req);
+  res.send({ status: "ok" });
 });
 
 app.get(
