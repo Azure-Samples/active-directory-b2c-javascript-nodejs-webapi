@@ -58,7 +58,7 @@ app.post("/beforeCreatingUserConnector", async (req, res) => {
     parts = auth.split(/:/), // split on colon
     username = parts[0],
     password = parts[1];
-		*/
+    */
 
   res.send({ version: API_VERSION, action: "Continue" });
 
@@ -86,7 +86,7 @@ app.post("/chargifyEndpoint", (req, res) => {
 });
 
 app.get(
-  "/token",
+  "/api_keys",
   passport.authenticate("oauth-bearer", { session: false }),
   (req, res) => {
     console.log("/token", req.authInfo);
@@ -94,7 +94,7 @@ app.get(
     // Service relies on the name claim.
     res.status(200).send(
       JSON.stringify({
-        token: Math.floor(Math.random() * 9999999999999999).toString(36),
+        token: fakeID(),
       })
     );
   }
@@ -116,6 +116,24 @@ app.get(
   }
 );
 
+app.get(
+  "/accounts",
+  passport.authenticate("oauth-bearer", { session: false }),
+  (req, res) => {
+    console.log("/usage", req.authInfo);
+
+    // Service relies on the name claim.
+    res.status(200).send(
+      JSON.stringify({
+        contaractID: fakeID(),
+        projectID: fakeID(),
+        apiKey: fakeID(),
+        usageLimit: Math.random() < 0.5 ? 5 : 10000,
+      })
+    );
+  }
+);
+
 // API endpoint
 app.get(
   "/hello",
@@ -124,7 +142,7 @@ app.get(
     console.log("Validated claims: ", req.authInfo);
 
     // Service relies on the name claim.
-    res.status(200).send(JSON.stringify({ azp: req.authInfo["azp"] }));
+    res.status(200).send(JSON.stringify({ azp: req.authInfo["sub"] }));
   }
 );
 
@@ -150,3 +168,6 @@ const port = process.env.PORT || 4040;
 app.listen(port, () => {
   console.log("Listening on port " + port);
 });
+
+
+const fakeID = () => Math.floor(Math.random() * 999999999999999).toString(36);
