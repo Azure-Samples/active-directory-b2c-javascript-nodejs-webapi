@@ -4,11 +4,14 @@ const passport = require('passport');
 const config = require('./config.json');
 const todolist = require('./todolist');
 const cors = require('cors');
-const BearerStrategy = require('passport-azure-ad').BearerStrategy;
 
+//<ms_docref_import_azuread_lib>
+const BearerStrategy = require('passport-azure-ad').BearerStrategy;
+//</ms_docref_import_azuread_lib>
 
 global.global_todos = [];
 
+//<ms_docref_azureadb2c_options>
 const options = {
     identityMetadata: `https://${config.credentials.tenantName}.b2clogin.com/${config.credentials.tenantName}.onmicrosoft.com/${config.policies.policyName}/${config.metadata.version}/${config.metadata.discovery}`,
     clientID: config.credentials.clientID,
@@ -20,12 +23,15 @@ const options = {
     passReqToCallback: config.settings.passReqToCallback
 }
 
+//</ms_docref_azureadb2c_options>
+
+//<ms_docref_init_azuread_lib>
 const bearerStrategy = new BearerStrategy(options, (token, done) => {
         // Send user info using the second argument
         done(null, { }, token);
     }
 );
-
+//</ms_docref_init_azuread_lib>
 const app = express();
 
 app.use(express.json()); 
@@ -44,7 +50,8 @@ passport.use(bearerStrategy);
 // To do list endpoints
 app.use('/api/todolist', todolist);
 
-// API endpoint
+//<ms_docref_protected_api_endpoint>
+// API endpoint, one must present a bearer accessToken to access this endpoint
 app.get('/hello',
     passport.authenticate('oauth-bearer', {session: false}),
     (req, res) => {
@@ -55,9 +62,12 @@ app.get('/hello',
         res.status(200).json({'name': req.authInfo['name']});
     }
 );
+//</ms_docref_protected_api_endpoint>
 
-// API anonymous endpoint
+//<ms_docref_anonymous_api_endpoint>
+// API anonymous endpoint, returns a date to the caller.
 app.get('/public', (req, res) => res.send( {'date': new Date() } ));
+//</ms_docref_anonymous_api_endpoint>
 
 const port = process.env.PORT || 5000;
 
