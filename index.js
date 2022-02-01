@@ -64,7 +64,7 @@ app.post("/beforeCreatingUserConnector", async (req, res) => {
 
   console.log("/beforeCreatingUserConnector", req);
 
-  console.log("sending user to database", req.body.displayName, req.body.email);
+  /*console.log("sending user to database", req.body.displayName, req.body.email);
   await executeInsertStatement(req.body.displayName, req.body.email);
 
   console.log("sending user to chargify", req.body.displayName, req.body.email);
@@ -72,7 +72,7 @@ app.post("/beforeCreatingUserConnector", async (req, res) => {
     req.body.email,
     req.body.givenName,
     req.body.surname
-  );
+  );*/
 });
 
 app.post("/beforeAppClaimsConnector", (req, res) => {
