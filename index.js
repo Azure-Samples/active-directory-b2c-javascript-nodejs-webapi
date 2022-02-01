@@ -9,6 +9,7 @@ const {
   executeInsertStatement,
 } = require("./database");
 const { sendUserToChargify } = require("./chargifyHandler");
+const sampleUsageData = require("./sampleUsageData");
 
 const options = {
   identityMetadata: `https://${config.metadata.b2cDomain}/${config.credentials.tenantName}/${config.policies.policyName}/${config.metadata.version}/${config.metadata.discovery}`,
@@ -107,12 +108,7 @@ app.get(
     console.log("/usage", req.authInfo);
 
     // Service relies on the name claim.
-    res.status(200).send(
-      JSON.stringify({
-        usage: Math.floor(Math.random() * 99),
-        isSub: Math.random() < 0.5,
-      })
-    );
+    res.status(200).send(sampleUsageData);
   }
 );
 
@@ -168,6 +164,5 @@ const port = process.env.PORT || 4040;
 app.listen(port, () => {
   console.log("Listening on port " + port);
 });
-
 
 const fakeID = () => Math.floor(Math.random() * 999999999999999).toString(36);
