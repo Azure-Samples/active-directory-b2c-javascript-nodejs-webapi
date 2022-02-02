@@ -116,17 +116,19 @@ app.get(
   "/accounts",
   passport.authenticate("oauth-bearer", { session: false }),
   (req, res) => {
-    console.log("/usage", req.authInfo);
+    console.log("/accounts", req.authInfo);
 
     // Service relies on the name claim.
-    res.status(200).send(
-      JSON.stringify({
-        contaractID: fakeID(),
-        projectID: fakeID(),
-        apiKey: fakeID(),
-        usageLimit: Math.random() < 0.5 ? 5 : 10000,
-      })
-    );
+    res.status(200).send([]);
+  }
+);
+
+app.post(
+  "/accounts",
+  passport.authenticate("oauth-bearer", { session: false }),
+  async (req, res) => {
+    await wait(5);
+    res.status(200).send([{ account_id: fakeID(), contracts: [] }]);
   }
 );
 
@@ -138,7 +140,7 @@ app.get(
     console.log("Validated claims: ", req.authInfo);
 
     // Service relies on the name claim.
-    res.status(200).send(JSON.stringify({ azp: req.authInfo["sub"] }));
+    res.status(200).send(JSON.stringify({ sub: req.authInfo["sub"] }));
   }
 );
 
@@ -166,3 +168,11 @@ app.listen(port, () => {
 });
 
 const fakeID = () => Math.floor(Math.random() * 999999999999999).toString(36);
+
+const wait = async (secs) => {
+  return new Promise((resolve, reject) =>
+    setTimeout(() => {
+      resolve();
+    }, secs * 1000)
+  );
+};
