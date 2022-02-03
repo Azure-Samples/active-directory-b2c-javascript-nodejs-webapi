@@ -1,13 +1,13 @@
 const express = require("express");
 const morgan = require("morgan");
 const passport = require("passport");
-const config = require("./config.json");
+const config = require("./config");
 const cors = require("cors");
 const BearerStrategy = require("passport-azure-ad").BearerStrategy;
-const {
-  executeSelectStatementWithEmail,
-  executeInsertStatement,
-} = require("./database");
+// const {
+//   executeSelectStatementWithEmail,
+//   executeInsertStatement,
+// } = require("./database");
 const { sendUserToChargify } = require("./chargifyHandler");
 const sampleUsageData = require("./sampleUsageData");
 
@@ -20,7 +20,7 @@ const options = {
   validateIssuer: config.settings.validateIssuer,
   loggingLevel: config.settings.loggingLevel,
   passReqToCallback: config.settings.passReqToCallback,
-  scope: config.protectedRoutes.hello.scopes,
+  scope: config.defaultScope,
 };
 
 const API_VERSION = "1.0.0";
@@ -152,11 +152,11 @@ app.get("/testEnvVar", (req, res) =>
 );
 
 app.get("/testDB", async (req, res) => {
-  const r = await executeSelectStatementWithEmail("michalp33@outlook.com");
-  res.send({
-    data: r,
-    test: 1,
-  });
+  // const r = await executeSelectStatementWithEmail("michalp33@outlook.com");
+  // res.send({
+  //   data: r,
+  //   test: 1,
+  // });
 });
 
 app.get("/", (req, res) => res.send({ message: "hello" }));
