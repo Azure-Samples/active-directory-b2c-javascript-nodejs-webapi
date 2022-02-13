@@ -10,6 +10,7 @@ const BearerStrategy = require("passport-azure-ad").BearerStrategy;
 // } = require("./database");
 const { sendUserToChargify } = require("./chargifyHandler");
 const sampleUsageData = require("./sampleUsageData");
+const faker = require("faker");
 
 const options = {
   identityMetadata: `https://${config.metadata.b2cDomain}/${config.credentials.tenantName}/${config.policies.policyName}/${config.metadata.version}/${config.metadata.discovery}`,
@@ -114,18 +115,40 @@ app.get(
 
 app.get(
   "/accounts",
-  passport.authenticate("oauth-bearer", { session: false }),
+  // passport.authenticate("oauth-bearer", { session: false }),
   (req, res) => {
     console.log("/accounts", req.authInfo);
 
     // Service relies on the name claim.
-    res.status(200).send([]);
+    res.status(200).send({
+      "accounts": [
+        {
+          "account_id": 0,
+          "contracts": [
+            {
+              "contract_id": 0,
+              "usage_limit_hrs": 0,
+              "projects": [
+                {
+                  "project_id": 0,
+                  "api_keys": [
+                    apiKey(), 
+                    apiKey()
+                  ],
+                  "name": "string"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    });
   }
 );
 
 app.post(
   "/accounts",
-  passport.authenticate("oauth-bearer", { session: false }),
+  // passport.authenticate("oauth-bearer", { session: false }),
   async (req, res) => {
     await wait(5);
     res.status(200).send([{ account_id: fakeID(), contracts: [] }]);
@@ -167,7 +190,12 @@ app.listen(port, () => {
   console.log("Listening on port " + port);
 });
 
-const fakeID = () => Math.floor(Math.random() * 999999999999999).toString(36);
+const apiKey = () => ({
+  "apikey_id": faker.datatype.string(16),
+  "name": faker.lorem.word(),
+  "created_at": faker.date.past(1),
+  "client_ref": faker.datatype.uuid()
+})
 
 const wait = async (secs) => {
   return new Promise((resolve, reject) =>
