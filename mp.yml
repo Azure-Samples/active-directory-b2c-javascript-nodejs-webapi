@@ -1,0 +1,441 @@
+swagger: "2.0"
+info:
+  title: Management platform API
+  version: 1.0.0
+  description: >-
+    The management platform API is used to manage customers and contracts.
+  contact:
+    email: support@speechmatics.com
+basePath: /v1
+schemes:
+  - https
+produces:
+  - application/json
+# security:
+# TODO: add note about auth for various components? (Azure, UI/App, Chargify)
+parameters:
+  Subject:
+    name: x-verified-subject
+    in: header
+    description: Verified Azure AD B2C subject
+    required: true
+    type: string
+  ContractID:
+    name: contract_id
+    in: path
+    required: true
+    type: integer
+  InvoiceID:
+    name: invoice_id
+    in: path
+    required: true
+    type: string
+paths:
+  # User portal UI
+  "/accounts":
+    parameters:
+      - $ref: "#/parameters/Subject"
+    post:
+      summary: Create an account.
+      consumes:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          required: false
+          schema:
+            $ref: "#/definitions/CreateAccountRequest"
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: "#/definitions/Account"
+        "409":
+          description: Conflict
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    get:
+      summary: Get accounts.
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/AccountsResponse"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  "/api_keys":
+    parameters:
+      - $ref: "#/parameters/Subject"
+    post:
+      summary: Create an API key.
+      consumes:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          required: false
+          schema:
+            $ref: "#/definitions/CreateApiKeysRequest"
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: "#/definitions/CreateApiKeysResponse"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "404":
+          # post to project that does not exist, or does not belong to the user that is posting
+          description: Not Found
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "403":
+          # 403 for too many keys already there
+          description: Forbidden, project has maximum number of api keys already
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  "/api_keys/{apikey_id}":
+    delete:
+      summary: Delete an API key.
+      consumes:
+        - application/json
+      parameters:
+        - name: apikey_id
+          in: path
+          required: true
+          type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/OkResponse"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "404":
+          # delete key in project that does not exist, or does not belong to the user that is deleting
+          description: Not Found
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  "/usage":
+    parameters:
+      - $ref: "#/parameters/Subject"
+    get:
+      summary: Get usage.
+      parameters:
+        - name: body
+          in: body
+          required: false
+          schema:
+            $ref: "#/definitions/UsageRequest"
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/UsageResponse"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  "/contracts":
+    parameters:
+      - $ref: "#/parameters/Subject"
+    post:
+      summary: Create a contract.
+      consumes:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/CreateContractsRequest"
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: "#/definitions/Contract"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    get:
+      summary: Get contracts.
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/ContractsResponse"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  "/contracts/{contract_id}":
+    parameters:
+      - $ref: "#/parameters/Subject"
+      - $ref: "#/parameters/ContractID"
+    put:
+      summary: Update a contract.
+      consumes:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          required: false
+          schema:
+            $ref: "#/definitions/UpdateContractsRequest"
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/Contract"
+        "404":
+          description: Not Found
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    get:
+      summary: Get a contract.
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/Contract"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  "/invoices":
+    parameters:
+      - $ref: "#/parameters/Subject"
+    get:
+      summary: Get invoices.
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/InvoicesResponse"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  "/invoices/{invoice_id}":
+    parameters:
+      - $ref: "#/parameters/Subject"
+      - $ref: "#/parameters/InvoiceID"
+    get:
+      summary: Get an invoice.
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/Invoice"
+        "404":
+          description: Not Found
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  # Chargify webhooks
+  # TODO: TBD
+definitions:
+  AccountsResponse:
+    type: object
+    required:
+      - accounts
+    properties:
+      accounts:
+        type: array
+        items:
+          $ref: "#/definitions/Account"
+  Account:
+    type: object
+    required:
+      - account_id
+      - contracts
+    properties:
+      account_id:
+        type: integer
+      contracts:
+        type: array
+        items:
+          $ref: "#/definitions/Contract"
+  Contract:
+    type: object
+    required:
+      - contract_id
+      - usage_limit_hrs
+      - projects
+      # TODO: more properties TBD
+    properties:
+      contract_id:
+        type: integer
+      usage_limit_hrs:
+        type: integer
+      projects:
+        type: array
+        items:
+          $ref: "#/definitions/Project"
+  Project:
+    type: object
+    required:
+      - project_id
+      - api_keys
+    properties:
+      project_id:
+        type: integer
+      api_keys:
+        type: array
+        items:
+          $ref: "#/definitions/ApiKey"
+      name:
+        type: string
+  ApiKey:
+    type: object
+    required:
+      - apikey_id
+    properties:
+      apikey_id:
+        type: string
+      name:
+        type: string
+      created_at:
+        type: string
+      client_ref:
+        type: string
+  CreateApiKeysRequest:
+    type: object
+    properties:
+      project_id:
+        type: integer
+        x-nullable: true
+      name:
+        type: string
+        x-nullable: true
+      client_ref:
+        type: string
+        x-nullable: true
+  CreateApiKeysResponse:
+    type: object
+    required:
+      - key_value
+      - apikey_id
+    properties:
+      key_value:
+        type: string
+      apikey_id:
+        type: string
+  UsageRequest:
+    type: object
+    properties:
+      contract_id:
+        type: integer
+        x-nullable: true
+      project_id:
+        type: integer
+        x-nullable: true
+      grouping:
+        $ref: "#/definitions/UsageGrouping"
+        x-nullable: true
+  UsageGrouping:
+    type: string
+    enum:
+      - monthly
+  UsageResponse:
+    # TODO: this is a placeholder, properties TBD
+    type: object
+    required:
+      - hours
+    properties:
+      hours:
+        type: integer
+  CreateContractsRequest:
+    type: object
+    required:
+      - contract_request_token
+    properties:
+      contract_request_token:
+        type: string
+        description: Token from chargify.js
+      account_id:
+        type: integer
+        x-nullable: true
+  CreateAccountRequest:
+    type: object
+    properties:
+      runtime_region:
+        description: If specified chooses runtime env, if not specified then default one is used
+        type: string
+        enum:
+          - eu-1
+          - eu-2
+          - usa-1
+          - usa-2
+          - trial
+  UpdateContractsRequest:
+    type: object
+    properties:
+      contract_request_token:
+        type: string
+        description: Token from chargify.js
+        x-nullable: true
+  ContractsResponse:
+    type: object
+    required:
+      - contracts
+    properties:
+      contracts:
+        type: array
+        items:
+          $ref: "#/definitions/Contract"
+  InvoicesResponse:
+    type: object
+    required:
+      - invoices
+    properties:
+      invoices:
+        type: array
+        items:
+          $ref: "#/definitions/Invoice"
+  Invoice:
+    type: object
+    required:
+      - public_url
+    properties:
+      public_url:
+        type: string
+  ErrorResponse:
+    type: object
+    required:
+      - code
+      - error
+    properties:
+      code:
+        type: integer
+        description: The HTTP status code.
+      error:
+        type: string
+        description: The error message.
+      detail:
+        type: string
+        description: The details of the error.
+  OkResponse:
+    type: object
+    properties:
+      status:
+        type: string
+        description: the OK string
+        example: OK

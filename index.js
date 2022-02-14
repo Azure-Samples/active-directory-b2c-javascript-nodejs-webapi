@@ -82,24 +82,39 @@ app.post("/beforeAppClaimsConnector", (req, res) => {
   res.send({ version: API_VERSION, action: "Continue" });
 });
 
-
 app.post("/chargifyEndpoint", (req, res) => {
   console.log("/chargifyEndpoint", req);
   res.send({ status: "ok" });
 });
 
-
 app.post(
   "/api_keys",
-  // passport.authenticate("oauth-bearer", { session: false }),
+  // passport.authenticate("oauth-bearer", { session: false }), //req.authInfo
   (req, res) => {
-    console.log("/api_keys", req.authInfo);
+    console.log("/api_keys");
+    const apikeyId = faker.datatype.string(16);
+    temp_apiKeys = [...temp_apiKeys, apiKey(apikeyId, req.body.name)];
 
     res.status(200).send({
-        "apikey_id": faker.datatype.string(16),
-        "key_value": faker.datatype.string(16),
-      }
+      apikey_id: apikeyId,
+      key_value: faker.datatype.string(40),
+    });
+  }
+);
+
+app.delete(
+  "/api_keys/:api_key_id",
+  // passport.authenticate("oauth-bearer", { session: false }),
+  (req, res) => {
+    console.log("delete /api_keys", req.params.api_key_id);
+
+    temp_apiKeys = temp_apiKeys.filter(
+      (key) => key.apikey_id != req.params.api_key_id
     );
+
+    res.status(200).send({
+      status: "ok",
+    });
   }
 );
 
@@ -160,18 +175,21 @@ app.get("/testDB", async (req, res) => {
 
 app.get("/", (req, res) => res.send({ message: "hello" }));
 
-const port = process.env.PORT || 4040;
+const port = process.env.PORT || 5000;
 
 app.listen(port, () => {
   console.log("Listening on port " + port);
 });
 
-const apiKey = () => ({
-  "apikey_id": faker.datatype.string(16),
-  "name": faker.lorem.word(),
-  "created_at": faker.date.past(1),
-  "client_ref": faker.datatype.uuid()
-})
+const generateToken = () =>
+  (Math.random() * 99999999999999999).toString(36).repeat(2);
+
+const apiKey = (id = "", name = "") => ({
+  apikey_id: id || generateToken(),
+  name: name || faker.lorem.word(),
+  created_at: faker.date.past(1),
+  client_ref: faker.datatype.uuid(),
+});
 
 const wait = async (secs) => {
   return new Promise((resolve, reject) =>
@@ -181,27 +199,25 @@ const wait = async (secs) => {
   );
 };
 
+let temp_apiKeys = [apiKey(), apiKey()];
 
 const getAccount = () => ({
-  "accounts": [
+  accounts: [
     {
-      "account_id": 0,
-      "contracts": [
+      account_id: 0,
+      contracts: [
         {
-          "contract_id": 0,
-          "usage_limit_hrs": 0,
-          "projects": [
+          contract_id: 0,
+          usage_limit_hrs: 0,
+          projects: [
             {
-              "project_id": 0,
-              "api_keys": [
-                apiKey(), 
-                apiKey()
-              ],
-              "name": faker.lorem.word(2)
-            }
-          ]
-        }
-      ]
-    }
-  ]
-})
+              project_id: 0,
+              api_keys: temp_apiKeys,
+              name: faker.lorem.word(2),
+            },
+          ],
+        },
+      ],
+    },
+  ],
+});

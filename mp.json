@@ -1,0 +1,1743 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Management platform API",
+    "version": "1.0.0",
+    "description": "The management platform API is used to manage customers and contracts.",
+    "contact": {
+      "email": "support@speechmatics.com"
+    }
+  },
+  "basePath": "/v1",
+  "schemes": [
+    "https"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "parameters": {
+    "Subject": {
+      "name": "x-verified-subject",
+      "in": "header",
+      "description": "Verified Azure AD B2C subject",
+      "required": true,
+      "type": "string"
+    },
+    "ContractID": {
+      "name": "contract_id",
+      "in": "path",
+      "required": true,
+      "type": "integer"
+    },
+    "InvoiceID": {
+      "name": "invoice_id",
+      "in": "path",
+      "required": true,
+      "type": "string"
+    }
+  },
+  "paths": {
+    "/accounts": {
+      "parameters": [
+        {
+          "name": "x-verified-subject",
+          "in": "header",
+          "description": "Verified Azure AD B2C subject",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "post": {
+        "summary": "Create an account.",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "runtime_region": {
+                  "description": "If specified chooses runtime env, if not specified then default one is used",
+                  "type": "string",
+                  "enum": [
+                    "eu-1",
+                    "eu-2",
+                    "usa-1",
+                    "usa-2",
+                    "trial"
+                  ]
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "type": "object",
+              "required": [
+                "account_id",
+                "contracts"
+              ],
+              "properties": {
+                "account_id": {
+                  "type": "integer"
+                },
+                "contracts": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "contract_id",
+                      "usage_limit_hrs",
+                      "projects"
+                    ],
+                    "properties": {
+                      "contract_id": {
+                        "type": "integer"
+                      },
+                      "usage_limit_hrs": {
+                        "type": "integer"
+                      },
+                      "projects": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "project_id",
+                            "api_keys"
+                          ],
+                          "properties": {
+                            "project_id": {
+                              "type": "integer"
+                            },
+                            "api_keys": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "required": [
+                                  "apikey_id"
+                                ],
+                                "properties": {
+                                  "apikey_id": {
+                                    "type": "string"
+                                  },
+                                  "name": {
+                                    "type": "string"
+                                  },
+                                  "created_at": {
+                                    "type": "string"
+                                  },
+                                  "client_ref": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            },
+                            "name": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "schema": {
+              "type": "object",
+              "required": [
+                "code",
+                "error"
+              ],
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "description": "The HTTP status code."
+                },
+                "error": {
+                  "type": "string",
+                  "description": "The error message."
+                },
+                "detail": {
+                  "type": "string",
+                  "description": "The details of the error."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "required": [
+                "code",
+                "error"
+              ],
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "description": "The HTTP status code."
+                },
+                "error": {
+                  "type": "string",
+                  "description": "The error message."
+                },
+                "detail": {
+                  "type": "string",
+                  "description": "The details of the error."
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Get accounts.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "required": [
+                "accounts"
+              ],
+              "properties": {
+                "accounts": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "account_id",
+                      "contracts"
+                    ],
+                    "properties": {
+                      "account_id": {
+                        "type": "integer"
+                      },
+                      "contracts": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "contract_id",
+                            "usage_limit_hrs",
+                            "projects"
+                          ],
+                          "properties": {
+                            "contract_id": {
+                              "type": "integer"
+                            },
+                            "usage_limit_hrs": {
+                              "type": "integer"
+                            },
+                            "projects": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "required": [
+                                  "project_id",
+                                  "api_keys"
+                                ],
+                                "properties": {
+                                  "project_id": {
+                                    "type": "integer"
+                                  },
+                                  "api_keys": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "object",
+                                      "required": [
+                                        "apikey_id"
+                                      ],
+                                      "properties": {
+                                        "apikey_id": {
+                                          "type": "string"
+                                        },
+                                        "name": {
+                                          "type": "string"
+                                        },
+                                        "created_at": {
+                                          "type": "string"
+                                        },
+                                        "client_ref": {
+                                          "type": "string"
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "name": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "required": [
+                "code",
+                "error"
+              ],
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "description": "The HTTP status code."
+                },
+                "error": {
+                  "type": "string",
+                  "description": "The error message."
+                },
+                "detail": {
+                  "type": "string",
+                  "description": "The details of the error."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api_keys": {
+      "parameters": [
+        {
+          "name": "x-verified-subject",
+          "in": "header",
+          "description": "Verified Azure AD B2C subject",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "post": {
+        "summary": "Create an API key.",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "project_id": {
+                  "type": "integer",
+                  "x-nullable": true
+                },
+                "name": {
+                  "type": "string",
+                  "x-nullable": true
+                },
+                "client_ref": {
+                  "type": "string",
+                  "x-nullable": true
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "type": "object",
+              "required": [
+                "key_value",
+                "apikey_id"
+              ],
+              "properties": {
+                "key_value": {
+                  "type": "string"
+                },
+                "apikey_id": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden, project has maximum number of api keys already",
+            "schema": {
+              "type": "object",
+              "required": [
+                "code",
+                "error"
+              ],
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "description": "The HTTP status code."
+                },
+                "error": {
+                  "type": "string",
+                  "description": "The error message."
+                },
+                "detail": {
+                  "type": "string",
+                  "description": "The details of the error."
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "required": [
+                "code",
+                "error"
+              ],
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "description": "The HTTP status code."
+                },
+                "error": {
+                  "type": "string",
+                  "description": "The error message."
+                },
+                "detail": {
+                  "type": "string",
+                  "description": "The details of the error."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "required": [
+                "code",
+                "error"
+              ],
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "description": "The HTTP status code."
+                },
+                "error": {
+                  "type": "string",
+                  "description": "The error message."
+                },
+                "detail": {
+                  "type": "string",
+                  "description": "The details of the error."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api_keys/{apikey_id}": {
+      "delete": {
+        "summary": "Delete an API key.",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "apikey_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "description": "the OK string",
+                  "example": "OK"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "required": [
+                "code",
+                "error"
+              ],
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "description": "The HTTP status code."
+                },
+                "error": {
+                  "type": "string",
+                  "description": "The error message."
+                },
+                "detail": {
+                  "type": "string",
+                  "description": "The details of the error."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "required": [
+                "code",
+                "error"
+              ],
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "description": "The HTTP status code."
+                },
+                "error": {
+                  "type": "string",
+                  "description": "The error message."
+                },
+                "detail": {
+                  "type": "string",
+                  "description": "The details of the error."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/usage": {
+      "parameters": [
+        {
+          "name": "x-verified-subject",
+          "in": "header",
+          "description": "Verified Azure AD B2C subject",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "get": {
+        "summary": "Get usage.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "contract_id": {
+                  "type": "integer",
+                  "x-nullable": true
+                },
+                "project_id": {
+                  "type": "integer",
+                  "x-nullable": true
+                },
+                "grouping": {
+                  "x-nullable": true,
+                  "type": "string",
+                  "enum": [
+                    "monthly"
+                  ]
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "required": [
+                "hours"
+              ],
+              "properties": {
+                "hours": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "required": [
+                "code",
+                "error"
+              ],
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "description": "The HTTP status code."
+                },
+                "error": {
+                  "type": "string",
+                  "description": "The error message."
+                },
+                "detail": {
+                  "type": "string",
+                  "description": "The details of the error."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/contracts": {
+      "parameters": [
+        {
+          "name": "x-verified-subject",
+          "in": "header",
+          "description": "Verified Azure AD B2C subject",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "post": {
+        "summary": "Create a contract.",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "contract_request_token"
+              ],
+              "properties": {
+                "contract_request_token": {
+                  "type": "string",
+                  "description": "Token from chargify.js"
+                },
+                "account_id": {
+                  "type": "integer",
+                  "x-nullable": true
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "type": "object",
+              "required": [
+                "contract_id",
+                "usage_limit_hrs",
+                "projects"
+              ],
+              "properties": {
+                "contract_id": {
+                  "type": "integer"
+                },
+                "usage_limit_hrs": {
+                  "type": "integer"
+                },
+                "projects": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "project_id",
+                      "api_keys"
+                    ],
+                    "properties": {
+                      "project_id": {
+                        "type": "integer"
+                      },
+                      "api_keys": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "apikey_id"
+                          ],
+                          "properties": {
+                            "apikey_id": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "created_at": {
+                              "type": "string"
+                            },
+                            "client_ref": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      "name": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "required": [
+                "code",
+                "error"
+              ],
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "description": "The HTTP status code."
+                },
+                "error": {
+                  "type": "string",
+                  "description": "The error message."
+                },
+                "detail": {
+                  "type": "string",
+                  "description": "The details of the error."
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Get contracts.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "required": [
+                "contracts"
+              ],
+              "properties": {
+                "contracts": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "contract_id",
+                      "usage_limit_hrs",
+                      "projects"
+                    ],
+                    "properties": {
+                      "contract_id": {
+                        "type": "integer"
+                      },
+                      "usage_limit_hrs": {
+                        "type": "integer"
+                      },
+                      "projects": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "project_id",
+                            "api_keys"
+                          ],
+                          "properties": {
+                            "project_id": {
+                              "type": "integer"
+                            },
+                            "api_keys": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "required": [
+                                  "apikey_id"
+                                ],
+                                "properties": {
+                                  "apikey_id": {
+                                    "type": "string"
+                                  },
+                                  "name": {
+                                    "type": "string"
+                                  },
+                                  "created_at": {
+                                    "type": "string"
+                                  },
+                                  "client_ref": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            },
+                            "name": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "required": [
+                "code",
+                "error"
+              ],
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "description": "The HTTP status code."
+                },
+                "error": {
+                  "type": "string",
+                  "description": "The error message."
+                },
+                "detail": {
+                  "type": "string",
+                  "description": "The details of the error."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/contracts/{contract_id}": {
+      "parameters": [
+        {
+          "name": "x-verified-subject",
+          "in": "header",
+          "description": "Verified Azure AD B2C subject",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "contract_id",
+          "in": "path",
+          "required": true,
+          "type": "integer"
+        }
+      ],
+      "put": {
+        "summary": "Update a contract.",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "contract_request_token": {
+                  "type": "string",
+                  "description": "Token from chargify.js",
+                  "x-nullable": true
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "required": [
+                "contract_id",
+                "usage_limit_hrs",
+                "projects"
+              ],
+              "properties": {
+                "contract_id": {
+                  "type": "integer"
+                },
+                "usage_limit_hrs": {
+                  "type": "integer"
+                },
+                "projects": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "project_id",
+                      "api_keys"
+                    ],
+                    "properties": {
+                      "project_id": {
+                        "type": "integer"
+                      },
+                      "api_keys": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "apikey_id"
+                          ],
+                          "properties": {
+                            "apikey_id": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "created_at": {
+                              "type": "string"
+                            },
+                            "client_ref": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      "name": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "required": [
+                "code",
+                "error"
+              ],
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "description": "The HTTP status code."
+                },
+                "error": {
+                  "type": "string",
+                  "description": "The error message."
+                },
+                "detail": {
+                  "type": "string",
+                  "description": "The details of the error."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "required": [
+                "code",
+                "error"
+              ],
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "description": "The HTTP status code."
+                },
+                "error": {
+                  "type": "string",
+                  "description": "The error message."
+                },
+                "detail": {
+                  "type": "string",
+                  "description": "The details of the error."
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Get a contract.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "required": [
+                "contract_id",
+                "usage_limit_hrs",
+                "projects"
+              ],
+              "properties": {
+                "contract_id": {
+                  "type": "integer"
+                },
+                "usage_limit_hrs": {
+                  "type": "integer"
+                },
+                "projects": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "project_id",
+                      "api_keys"
+                    ],
+                    "properties": {
+                      "project_id": {
+                        "type": "integer"
+                      },
+                      "api_keys": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "apikey_id"
+                          ],
+                          "properties": {
+                            "apikey_id": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "created_at": {
+                              "type": "string"
+                            },
+                            "client_ref": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      "name": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "required": [
+                "code",
+                "error"
+              ],
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "description": "The HTTP status code."
+                },
+                "error": {
+                  "type": "string",
+                  "description": "The error message."
+                },
+                "detail": {
+                  "type": "string",
+                  "description": "The details of the error."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/invoices": {
+      "parameters": [
+        {
+          "name": "x-verified-subject",
+          "in": "header",
+          "description": "Verified Azure AD B2C subject",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "get": {
+        "summary": "Get invoices.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "required": [
+                "invoices"
+              ],
+              "properties": {
+                "invoices": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "public_url"
+                    ],
+                    "properties": {
+                      "public_url": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "required": [
+                "code",
+                "error"
+              ],
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "description": "The HTTP status code."
+                },
+                "error": {
+                  "type": "string",
+                  "description": "The error message."
+                },
+                "detail": {
+                  "type": "string",
+                  "description": "The details of the error."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/invoices/{invoice_id}": {
+      "parameters": [
+        {
+          "name": "x-verified-subject",
+          "in": "header",
+          "description": "Verified Azure AD B2C subject",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "invoice_id",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "get": {
+        "summary": "Get an invoice.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "required": [
+                "public_url"
+              ],
+              "properties": {
+                "public_url": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "required": [
+                "code",
+                "error"
+              ],
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "description": "The HTTP status code."
+                },
+                "error": {
+                  "type": "string",
+                  "description": "The error message."
+                },
+                "detail": {
+                  "type": "string",
+                  "description": "The details of the error."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "required": [
+                "code",
+                "error"
+              ],
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "description": "The HTTP status code."
+                },
+                "error": {
+                  "type": "string",
+                  "description": "The error message."
+                },
+                "detail": {
+                  "type": "string",
+                  "description": "The details of the error."
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "AccountsResponse": {
+      "type": "object",
+      "required": [
+        "accounts"
+      ],
+      "properties": {
+        "accounts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "account_id",
+              "contracts"
+            ],
+            "properties": {
+              "account_id": {
+                "type": "integer"
+              },
+              "contracts": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "contract_id",
+                    "usage_limit_hrs",
+                    "projects"
+                  ],
+                  "properties": {
+                    "contract_id": {
+                      "type": "integer"
+                    },
+                    "usage_limit_hrs": {
+                      "type": "integer"
+                    },
+                    "projects": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "project_id",
+                          "api_keys"
+                        ],
+                        "properties": {
+                          "project_id": {
+                            "type": "integer"
+                          },
+                          "api_keys": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "required": [
+                                "apikey_id"
+                              ],
+                              "properties": {
+                                "apikey_id": {
+                                  "type": "string"
+                                },
+                                "name": {
+                                  "type": "string"
+                                },
+                                "created_at": {
+                                  "type": "string"
+                                },
+                                "client_ref": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Account": {
+      "type": "object",
+      "required": [
+        "account_id",
+        "contracts"
+      ],
+      "properties": {
+        "account_id": {
+          "type": "integer"
+        },
+        "contracts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "contract_id",
+              "usage_limit_hrs",
+              "projects"
+            ],
+            "properties": {
+              "contract_id": {
+                "type": "integer"
+              },
+              "usage_limit_hrs": {
+                "type": "integer"
+              },
+              "projects": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "project_id",
+                    "api_keys"
+                  ],
+                  "properties": {
+                    "project_id": {
+                      "type": "integer"
+                    },
+                    "api_keys": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "apikey_id"
+                        ],
+                        "properties": {
+                          "apikey_id": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "created_at": {
+                            "type": "string"
+                          },
+                          "client_ref": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Contract": {
+      "type": "object",
+      "required": [
+        "contract_id",
+        "usage_limit_hrs",
+        "projects"
+      ],
+      "properties": {
+        "contract_id": {
+          "type": "integer"
+        },
+        "usage_limit_hrs": {
+          "type": "integer"
+        },
+        "projects": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "project_id",
+              "api_keys"
+            ],
+            "properties": {
+              "project_id": {
+                "type": "integer"
+              },
+              "api_keys": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "apikey_id"
+                  ],
+                  "properties": {
+                    "apikey_id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "client_ref": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "name": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "Project": {
+      "type": "object",
+      "required": [
+        "project_id",
+        "api_keys"
+      ],
+      "properties": {
+        "project_id": {
+          "type": "integer"
+        },
+        "api_keys": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "apikey_id"
+            ],
+            "properties": {
+              "apikey_id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "created_at": {
+                "type": "string"
+              },
+              "client_ref": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "ApiKey": {
+      "type": "object",
+      "required": [
+        "apikey_id"
+      ],
+      "properties": {
+        "apikey_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string"
+        },
+        "client_ref": {
+          "type": "string"
+        }
+      }
+    },
+    "CreateApiKeysRequest": {
+      "type": "object",
+      "properties": {
+        "project_id": {
+          "type": "integer",
+          "x-nullable": true
+        },
+        "name": {
+          "type": "string",
+          "x-nullable": true
+        },
+        "client_ref": {
+          "type": "string",
+          "x-nullable": true
+        }
+      }
+    },
+    "CreateApiKeysResponse": {
+      "type": "object",
+      "required": [
+        "key_value",
+        "apikey_id"
+      ],
+      "properties": {
+        "key_value": {
+          "type": "string"
+        },
+        "apikey_id": {
+          "type": "string"
+        }
+      }
+    },
+    "UsageRequest": {
+      "type": "object",
+      "properties": {
+        "contract_id": {
+          "type": "integer",
+          "x-nullable": true
+        },
+        "project_id": {
+          "type": "integer",
+          "x-nullable": true
+        },
+        "grouping": {
+          "x-nullable": true,
+          "type": "string",
+          "enum": [
+            "monthly"
+          ]
+        }
+      }
+    },
+    "UsageGrouping": {
+      "type": "string",
+      "enum": [
+        "monthly"
+      ]
+    },
+    "UsageResponse": {
+      "type": "object",
+      "required": [
+        "hours"
+      ],
+      "properties": {
+        "hours": {
+          "type": "integer"
+        }
+      }
+    },
+    "CreateContractsRequest": {
+      "type": "object",
+      "required": [
+        "contract_request_token"
+      ],
+      "properties": {
+        "contract_request_token": {
+          "type": "string",
+          "description": "Token from chargify.js"
+        },
+        "account_id": {
+          "type": "integer",
+          "x-nullable": true
+        }
+      }
+    },
+    "CreateAccountRequest": {
+      "type": "object",
+      "properties": {
+        "runtime_region": {
+          "description": "If specified chooses runtime env, if not specified then default one is used",
+          "type": "string",
+          "enum": [
+            "eu-1",
+            "eu-2",
+            "usa-1",
+            "usa-2",
+            "trial"
+          ]
+        }
+      }
+    },
+    "UpdateContractsRequest": {
+      "type": "object",
+      "properties": {
+        "contract_request_token": {
+          "type": "string",
+          "description": "Token from chargify.js",
+          "x-nullable": true
+        }
+      }
+    },
+    "ContractsResponse": {
+      "type": "object",
+      "required": [
+        "contracts"
+      ],
+      "properties": {
+        "contracts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "contract_id",
+              "usage_limit_hrs",
+              "projects"
+            ],
+            "properties": {
+              "contract_id": {
+                "type": "integer"
+              },
+              "usage_limit_hrs": {
+                "type": "integer"
+              },
+              "projects": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "project_id",
+                    "api_keys"
+                  ],
+                  "properties": {
+                    "project_id": {
+                      "type": "integer"
+                    },
+                    "api_keys": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "apikey_id"
+                        ],
+                        "properties": {
+                          "apikey_id": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "created_at": {
+                            "type": "string"
+                          },
+                          "client_ref": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "InvoicesResponse": {
+      "type": "object",
+      "required": [
+        "invoices"
+      ],
+      "properties": {
+        "invoices": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "public_url"
+            ],
+            "properties": {
+              "public_url": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "Invoice": {
+      "type": "object",
+      "required": [
+        "public_url"
+      ],
+      "properties": {
+        "public_url": {
+          "type": "string"
+        }
+      }
+    },
+    "ErrorResponse": {
+      "type": "object",
+      "required": [
+        "code",
+        "error"
+      ],
+      "properties": {
+        "code": {
+          "type": "integer",
+          "description": "The HTTP status code."
+        },
+        "error": {
+          "type": "string",
+          "description": "The error message."
+        },
+        "detail": {
+          "type": "string",
+          "description": "The details of the error."
+        }
+      }
+    },
+    "OkResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "description": "the OK string",
+          "example": "OK"
+        }
+      }
+    }
+  }
+}
