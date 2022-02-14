@@ -197,7 +197,7 @@ const getAccount = () => ({
                 apiKey(), 
                 apiKey()
               ],
-              "name": faker.datatype.word(2)
+              "name": faker.lorem.word(2)
             }
           ]
         }
