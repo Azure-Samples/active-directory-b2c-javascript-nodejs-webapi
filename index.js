@@ -82,22 +82,23 @@ app.post("/beforeAppClaimsConnector", (req, res) => {
   res.send({ version: API_VERSION, action: "Continue" });
 });
 
+
 app.post("/chargifyEndpoint", (req, res) => {
   console.log("/chargifyEndpoint", req);
   res.send({ status: "ok" });
 });
 
-app.get(
-  "/api_keys",
-  passport.authenticate("oauth-bearer", { session: false }),
-  (req, res) => {
-    console.log("/token", req.authInfo);
 
-    // Service relies on the name claim.
-    res.status(200).send(
-      JSON.stringify({
-        token: fakeID(),
-      })
+app.post(
+  "/api_keys",
+  // passport.authenticate("oauth-bearer", { session: false }),
+  (req, res) => {
+    console.log("/api_keys", req.authInfo);
+
+    res.status(200).send({
+        "apikey_id": faker.datatype.string(16),
+        "key_value": faker.datatype.string(16),
+      }
     );
   }
 );
@@ -108,7 +109,6 @@ app.get(
   (req, res) => {
     console.log("/usage", req.authInfo);
 
-    // Service relies on the name claim.
     res.status(200).send(sampleUsageData);
   }
 );
@@ -119,30 +119,7 @@ app.get(
   (req, res) => {
     console.log("/accounts", req.authInfo);
 
-    // Service relies on the name claim.
-    res.status(200).send({
-      "accounts": [
-        {
-          "account_id": 0,
-          "contracts": [
-            {
-              "contract_id": 0,
-              "usage_limit_hrs": 0,
-              "projects": [
-                {
-                  "project_id": 0,
-                  "api_keys": [
-                    apiKey(), 
-                    apiKey()
-                  ],
-                  "name": "string"
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    });
+    res.status(200).send(getAccount());
   }
 );
 
@@ -150,8 +127,8 @@ app.post(
   "/accounts",
   // passport.authenticate("oauth-bearer", { session: false }),
   async (req, res) => {
-    await wait(5);
-    res.status(200).send([{ account_id: fakeID(), contracts: [] }]);
+    //await wait(5);
+    res.status(200).send(getAccount());
   }
 );
 
@@ -162,7 +139,6 @@ app.get(
   (req, res) => {
     console.log("Validated claims: ", req.authInfo);
 
-    // Service relies on the name claim.
     res.status(200).send(JSON.stringify({ sub: req.authInfo["sub"] }));
   }
 );
@@ -204,3 +180,28 @@ const wait = async (secs) => {
     }, secs * 1000)
   );
 };
+
+
+const getAccount = () => ({
+  "accounts": [
+    {
+      "account_id": 0,
+      "contracts": [
+        {
+          "contract_id": 0,
+          "usage_limit_hrs": 0,
+          "projects": [
+            {
+              "project_id": 0,
+              "api_keys": [
+                apiKey(), 
+                apiKey()
+              ],
+              "name": faker.datatype.word(2)
+            }
+          ]
+        }
+      ]
+    }
+  ]
+})
