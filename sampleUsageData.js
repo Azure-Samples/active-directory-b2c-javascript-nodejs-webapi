@@ -1,56 +1,68 @@
+const faker = require("faker");
 
 
 const sampleJson = {
   data: [
-    {
-      month: 7,
-      year: 2021,
-      usageNormal: 0.5,
-      limitNormal: 3,
-      usageEnhanced: 1.5,
-      limitEnhanced: 3
-    },
-    {
-      month: 8,
-      year: 2021,
-      usageNormal: 1.5,
-      limitNormal: 3,
-      usageEnhanced: 0.5,
-      limitEnhanced: 3
-    },
-    {
-      month: 9,
-      year: 2021,
-      usageNormal: 2.5,
-      limitNormal: 3,
-      usageEnhanced: 1.5,
-      limitEnhanced: 3
-    },
-    {
-      month: 10,
-      year: 2021,
-      usageNormal: 1.5,
-      limitNormal: 3,
-      usageEnhanced: 2.5,
-      limitEnhanced: 3
-    },
-    {
-      month: 11,
-      year: 2021,
-      usageNormal: 2.9,
-      limitNormal: 3,
-      usageEnhanced: 1.9,
-      limitEnhanced: 3
-    },
-    {
-      month: 12,
-      year: 2021,
-      usageNormal: 2.5,
-      limitNormal: 3,
-      usageEnhanced: 0.3,
-      limitEnhanced: 3
-    },
+    ...Array.from({length: 10}).map((_, i) => ({
+        "since": `2022-0${i+1}-01`,
+        "until": `2022-0${i+2}-01`,
+        "total_hrs": faker.datatype.float({min: 0.5, max: 5.0}),
+        "summary": [
+          {
+            "mode": "batch",
+            "type": "transcription",
+            "operating_point": "standard",
+            "count": faker.datatype.number({min: 1, max: 5}),
+            "duration_hrs": faker.datatype.float({min: 0.5, max: 5.0})
+          },
+          {
+            "mode": "batch",
+            "type": "transcription",
+            "operating_point": "enhanced",
+            "count": faker.datatype.number({min: 1, max: 5}),
+            "duration_hrs": faker.datatype.float({min: 0.5, max: 5.0})
+          },
+          {
+            "mode": "batch",
+            "type": "alignment",
+            "count": faker.datatype.number({min: 1, max: 5}),
+            "duration_hrs": faker.datatype.float({min: 0.5, max: 5.0})
+          }
+        ]
+      })
+    )
   ]
+  
 }
+
+/*
+[
+  {
+    "since": "2022-01-02",
+    "until": "2022-02-02",
+    "total_hrs": 1.63,
+    "summary": [
+      {
+        "mode": "batch",
+        "type": "transcription",
+        "operating_point": "standard",
+        "count": 5,
+        "duration_hrs": 1.53
+      },
+      {
+        "mode": "batch",
+        "type": "alignment",
+        "count": 1,
+        "duration_hrs": 0.1
+      }
+    ]
+  },
+  {
+    "since": "2022-01-03",
+    "until": "2022-02-04",
+    "...": null
+  }
+]
+*/
 
 module.exports = sampleJson;
