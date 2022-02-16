@@ -42,6 +42,13 @@ app.use(
   })
 );
 
+app.use((req, res, next) => {
+  res.append("Access-Control-Allow-Origin", ["*"]);
+  res.append("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+  res.append("Access-Control-Allow-Headers", "Content-Type");
+  next();
+});
+
 app.use(morgan("dev"));
 
 app.use(passport.initialize());
@@ -95,16 +102,10 @@ app.post(
     const apikeyId = faker.datatype.string(16);
     temp_apiKeys = [...temp_apiKeys, apiKey(apikeyId, req.body.name)];
 
-    res
-      .status(200)
-      .set({
-        "Access-Control-Allow-Origin": "*",
-        "Content-Type": "application/json",
-      })
-      .send({
-        apikey_id: apikeyId,
-        key_value: faker.datatype.string(40),
-      });
+    res.status(200).send({
+      apikey_id: apikeyId,
+      key_value: faker.datatype.string(40),
+    });
   }
 );
 
