@@ -120,7 +120,7 @@ app.delete(
 
 app.get(
   "/usage",
-  passport.authenticate("oauth-bearer", { session: false }),
+  // passport.authenticate("oauth-bearer", { session: false }),
   (req, res) => {
     console.log("/usage", req.authInfo);
 
@@ -208,7 +208,7 @@ const getAccount = () => ({
       contracts: [
         {
           contract_id: 0,
-          usage_limit_hrs: 0,
+          usage_limit_hrs: 5,
           projects: [
             {
               project_id: 0,
