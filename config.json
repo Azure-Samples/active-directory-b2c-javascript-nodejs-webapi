@@ -4,10 +4,10 @@
         "clientID": "93733604-cc77-4a3c-a604-87084dd55348"
     },
     "policies": {
-        "policyName": "B2C_1_SUSI"
+        "policyName": "B2C_1_susi"
     },
     "resource": {
-        "scope": ["demo.read"]
+        "scope": ["tasks.read"]
     },
     "metadata": {
         "authority": "login.microsoftonline.com",
