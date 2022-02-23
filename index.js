@@ -12,24 +12,24 @@ const { sendUserToChargify } = require("./chargifyHandler");
 const sampleUsageData = require("./sampleUsageData");
 const faker = require("faker");
 
-const options = {
-  identityMetadata: `https://${config.metadata.b2cDomain}/${config.credentials.tenantName}/${config.policies.policyName}/${config.metadata.version}/${config.metadata.discovery}`,
-  clientID: config.credentials.clientID,
-  audience: config.credentials.clientID,
-  policyName: config.policies.policyName,
-  isB2C: config.settings.isB2C,
-  validateIssuer: config.settings.validateIssuer,
-  loggingLevel: config.settings.loggingLevel,
-  passReqToCallback: config.settings.passReqToCallback,
-  scope: config.defaultScope,
-};
+// const options = {
+//   identityMetadata: `https://${config.metadata.b2cDomain}/${config.credentials.tenantName}/${config.policies.policyName}/${config.metadata.version}/${config.metadata.discovery}`,
+//   clientID: config.credentials.clientID,
+//   audience: config.credentials.clientID,
+//   policyName: config.policies.policyName,
+//   isB2C: config.settings.isB2C,
+//   validateIssuer: config.settings.validateIssuer,
+//   loggingLevel: config.settings.loggingLevel,
+//   passReqToCallback: config.settings.passReqToCallback,
+//   scope: config.defaultScope,
+// };
 
 const API_VERSION = "1.0.0";
 
-const bearerStrategy = new BearerStrategy(options, (token, done) => {
-  console.log("bearerStrategy", { token }); // Send user info using the second argument
-  done(null, {}, token);
-});
+// const bearerStrategy = new BearerStrategy(options, (token, done) => {
+//   console.log("bearerStrategy", { token }); // Send user info using the second argument
+//   done(null, {}, token);
+// });
 
 const app = express();
 
@@ -38,44 +38,20 @@ app.use(express.json());
 //enable CORS (for testing only -remove in production/deployment)
 app.use(
   cors({
-    origin: ["*"],
+    origin: "*",
   })
 );
 
+app.use((req, res, next) => {
+  res.append("Access-Control-Allow-Origin", "*");
+  next();
+});
+
 app.use(morgan("dev"));
 
-app.use(passport.initialize());
+// app.use(passport.initialize());
 
-passport.use(bearerStrategy);
-
-app.post("/signUpConnector", (req, res) => {
-  console.log("/signUpConnector", req);
-  res.send({ version: API_VERSION, action: "Continue" });
-});
-
-app.post("/beforeCreatingUserConnector", async (req, res) => {
-  /* var header = req.headers["authorization"] || "", // get the header
-    token = header.split(/\s+/).pop() || "", // and the encoded auth token
-    auth = new Buffer.from(token, "base64").toString(), // convert from base64
-    parts = auth.split(/:/), // split on colon
-    username = parts[0],
-    password = parts[1];
-    */
-
-  res.send({ version: API_VERSION, action: "Continue" });
-
-  console.log("/beforeCreatingUserConnector", req);
-
-  /*console.log("sending user to database", req.body.displayName, req.body.email);
-  await executeInsertStatement(req.body.displayName, req.body.email);
-
-  console.log("sending user to chargify", req.body.displayName, req.body.email);
-  await sendUserToChargify(
-    req.body.email,
-    req.body.givenName,
-    req.body.surname
-  );*/
-});
+// passport.use(bearerStrategy);
 
 app.post("/beforeAppClaimsConnector", (req, res) => {
   console.log("/beforeAppClaimsConnector", req);
@@ -123,7 +99,6 @@ app.get(
   // passport.authenticate("oauth-bearer", { session: false }),
   (req, res) => {
     console.log("/usage", req.authInfo);
-
     res.status(200).send(sampleUsageData);
   }
 );
@@ -150,7 +125,7 @@ app.post(
 // API endpoint
 app.get(
   "/hello",
-  passport.authenticate("oauth-bearer", { session: false }),
+  // passport.authenticate("oauth-bearer", { session: false }),
   (req, res) => {
     console.log("Validated claims: ", req.authInfo);
 
@@ -220,4 +195,33 @@ const getAccount = () => ({
       ],
     },
   ],
+});
+
+app.post("/signUpConnector", (req, res) => {
+  console.log("/signUpConnector", req);
+  res.send({ version: API_VERSION, action: "Continue" });
+});
+
+app.post("/beforeCreatingUserConnector", async (req, res) => {
+  /* var header = req.headers["authorization"] || "", // get the header
+    token = header.split(/\s+/).pop() || "", // and the encoded auth token
+    auth = new Buffer.from(token, "base64").toString(), // convert from base64
+    parts = auth.split(/:/), // split on colon
+    username = parts[0],
+    password = parts[1];
+    */
+
+  res.send({ version: API_VERSION, action: "Continue" });
+
+  console.log("/beforeCreatingUserConnector", req);
+
+  /*console.log("sending user to database", req.body.displayName, req.body.email);
+  await executeInsertStatement(req.body.displayName, req.body.email);
+
+  console.log("sending user to chargify", req.body.displayName, req.body.email);
+  await sendUserToChargify(
+    req.body.email,
+    req.body.givenName,
+    req.body.surname
+  );*/
 });
