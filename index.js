@@ -36,11 +36,11 @@ const app = express();
 app.use(express.json());
 
 //enable CORS (for testing only -remove in production/deployment)
-app.use(
-  cors({
-    origin: "*",
-  })
-);
+// app.use(
+//   cors({
+//     origin: "*",
+//   })
+// );
 
 app.use((req, res, next) => {
   res.append("Access-Control-Allow-Origin", "*");
