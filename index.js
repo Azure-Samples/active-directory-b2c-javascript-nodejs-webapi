@@ -42,8 +42,14 @@ app.use(express.json());
 //   })
 // );
 
-app.use((req, res, next) => {
-  res.append("Access-Control-Allow-Origin", "*");
+app.use((req, response, next) => {
+  response.append("Access-Control-Allow-Origin", "*");
+  response.append("Access-Control-Allow-Credentials", "true");
+  response.append("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+  response.append(
+    "Access-Control-Allow-Headers",
+    "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"
+  );
   next();
 });
 
