@@ -135,12 +135,14 @@ app.get(
   (req, res) => {
     console.log("Validated claims: ", req.authInfo);
 
-    res.status(200).send(JSON.stringify({ sub: req.authInfo["sub"] }));
+    res
+      .status(200)
+      .send(JSON.stringify({ sub: req.authInfo?.["sub"], test: 1 }));
   }
 );
 
 // API anonymous endpoint
-app.get("/public", (req, res) => res.send({ date: new Date() }));
+app.get("/public", (req, res) => res.send({ date: new Date(), test: 1 }));
 
 app.get("/testEnvVar", (req, res) =>
   res.send({ date: process.env.TEST_ENV_VAR, test: 1 })
