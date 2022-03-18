@@ -128,6 +128,10 @@ app.post(
   }
 );
 
+app.get("/payments", (req, res) => {
+  res.status(200).json({ ...getPaymentsInfo() });
+});
+
 // API endpoint
 app.get(
   "/hello",
@@ -164,6 +168,39 @@ app.listen(port, () => {
   console.log("Listening on port " + port);
 });
 
+const getPaymentsInfo = () => {
+  return {
+    payments: [
+      {
+        start_date: "2022-02-01",
+        end_date: "2022-02-28",
+        total_hrs: "10.5",
+        total_cost: "5.43",
+        status: "paid",
+        billing_date: "2022-03-01",
+        url: "https://www.chargifypay.com/invoice/inv_abcd1234?token=efgh5678",
+      },
+      {
+        start_date: "2022-03-01",
+        end_date: "2022-03-31",
+        total_hrs: "12.3",
+        total_cost: "10.27",
+        status: "due",
+        billing_date: "2022-04-01",
+        url: "https://www.chargifypay.com/invoice/inv_abcd4321?token=efgh8765",
+      },
+      {
+        start_date: "2022-04-01",
+        end_date: "2022-04-03",
+        total_hrs: "1.2",
+        total_cost: "0",
+        status: "due",
+        billing_date: "2022-05-01",
+      },
+    ],
+  };
+};
+
 const generateToken = () =>
   (Math.random() * 99999999999999999).toString(36).repeat(2);
 
@@ -191,7 +228,23 @@ const getAccount = () => ({
       contracts: [
         {
           contract_id: 0,
-          usage_limit_hrs: 5,
+          runtime_url: "https://runtime-url.speechmatics.test",
+          payment_method: {
+            card_type: "visa",
+            masked_card_number: "XXXX XXXX XXXX 2132",
+            expiration_month: "03",
+            expiration_year: "23",
+          },
+          usage_limits: [
+            {
+              name: "LIM_DUR_CUR_MON_STANDARD_SEC",
+              value: 10800,
+            },
+            {
+              name: "LIM_DUR_CUR_MON_ENHANCED_SEC",
+              value: 10800,
+            },
+          ],
           projects: [
             {
               project_id: 0,
