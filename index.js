@@ -45,7 +45,10 @@ app.use(express.json());
 app.use((req, response, next) => {
   response.append("Access-Control-Allow-Origin", "*");
   response.append("Access-Control-Allow-Credentials", "true");
-  response.append("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+  response.append(
+    "Access-Control-Allow-Methods",
+    "GET,HEAD,OPTIONS,POST,PUT,DELETE"
+  );
   response.append(
     "Access-Control-Allow-Headers",
     "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Authorization, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"
@@ -72,10 +75,12 @@ app.post("/chargifyEndpoint", (req, res) => {
 app.post(
   "/api_keys",
   // passport.authenticate("oauth-bearer", { session: false }), //req.authInfo
-  (req, res) => {
+  async (req, res) => {
     console.log("/api_keys");
     const apikeyId = faker.datatype.string(16);
     temp_apiKeys = [...temp_apiKeys, apiKey(apikeyId, req.body.name)];
+
+    // await wait(200);
 
     res.status(200).send({
       apikey_id: apikeyId,
@@ -105,7 +110,7 @@ app.get(
   // passport.authenticate("oauth-bearer", { session: false }),
   (req, res) => {
     console.log("/usage", req.authInfo);
-    res.status(200).send(sampleUsageData);
+    res.status(200).send({ ...sampleUsageData, breakdown: [] });
   }
 );
 
