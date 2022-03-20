@@ -202,9 +202,21 @@ const getPaymentsInfo = () => {
         status: "due",
         billing_date: "2022-05-01",
       },
+      ...(Array.from({length: 20}).map((_, i) => (
+        {
+          start_date: "2022-04-"+pad(i+1),
+          end_date: "2022-04-"+pad(i+2),
+          total_hrs: faker.datatype.number({min: 0.1, max: 10}),
+          total_cost: faker.datatype.number({min: 0.1, max: 10}),
+          status: "due",
+          billing_date: "2022-05-01",
+        }
+      )))
     ],
   };
 };
+
+const pad = (n) => n.toString().padStart(2, "0")
 
 const generateToken = () =>
   (Math.random() * 99999999999999999).toString(36).repeat(2);
