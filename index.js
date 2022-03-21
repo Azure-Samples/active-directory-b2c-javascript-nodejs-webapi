@@ -110,16 +110,16 @@ app.get(
   // passport.authenticate("oauth-bearer", { session: false }),
   (req, res) => {
     console.log("/usage", req.authInfo);
-    res.status(200).send({ ...sampleUsageData, breakdown: [] });
+    res.status(200).send({ ...sampleUsageData });
   }
 );
 
 app.get(
   "/accounts",
   // passport.authenticate("oauth-bearer", { session: false }),
-  (req, res) => {
+  async (req, res) => {
     console.log("/accounts", req.authInfo);
-
+    await wait(15);
     res.status(200).send(getAccount());
   }
 );
@@ -202,21 +202,19 @@ const getPaymentsInfo = () => {
         status: "due",
         billing_date: "2022-05-01",
       },
-      ...(Array.from({length: 20}).map((_, i) => (
-        {
-          start_date: "2022-04-"+pad(i+1),
-          end_date: "2022-04-"+pad(i+2),
-          total_hrs: faker.datatype.number({min: 0.1, max: 10}),
-          total_cost: faker.datatype.number({min: 0.1, max: 10}),
-          status: "due",
-          billing_date: "2022-05-01",
-        }
-      )))
+      ...Array.from({ length: 20 }).map((_, i) => ({
+        start_date: "2022-04-" + pad(i + 1),
+        end_date: "2022-04-" + pad(i + 2),
+        total_hrs: faker.datatype.number({ min: 0.1, max: 10 }),
+        total_cost: faker.datatype.number({ min: 0.1, max: 10 }),
+        status: "due",
+        billing_date: "2022-05-01",
+      })),
     ],
   };
 };
 
-const pad = (n) => n.toString().padStart(2, "0")
+const pad = (n) => n.toString().padStart(2, "0");
 
 const generateToken = () =>
   (Math.random() * 99999999999999999).toString(36).repeat(2);
