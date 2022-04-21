@@ -35,26 +35,26 @@ const app = express();
 
 app.use(express.json());
 
-//enable CORS (for testing only -remove in production/deployment)
-// app.use(
-//   cors({
-//     origin: "*",
-//   })
-// );
+// enable CORS(for testing only - remove in production / deployment)
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 
-app.use((req, response, next) => {
-  response.append("Access-Control-Allow-Origin", "*");
-  response.append("Access-Control-Allow-Credentials", "true");
-  response.append(
-    "Access-Control-Allow-Methods",
-    "GET,HEAD,OPTIONS,POST,PUT,DELETE"
-  );
-  response.append(
-    "Access-Control-Allow-Headers",
-    "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Authorization, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"
-  );
-  next();
-});
+// app.use(async (req, response, next) => {
+//   response.append("Access-Control-Allow-Origin", "*");
+//   response.append("Access-Control-Allow-Credentials", "true");
+//   response.append(
+//     "Access-Control-Allow-Methods",
+//     "GET,HEAD,OPTIONS,POST,PUT,DELETE"
+//   );
+//   response.append(
+//     "Access-Control-Allow-Headers",
+//     "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Authorization, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"
+//   );
+//   next();
+// });
 
 app.use(morgan("dev"));
 
@@ -74,10 +74,11 @@ app.post("/chargifyEndpoint", (req, res) => {
 
 app.post(
   "/api_keys",
+  cors({ origin: '*' }),
   // passport.authenticate("oauth-bearer", { session: false }), //req.authInfo
   async (req, res) => {
     console.log("/api_keys");
-    const apikeyId = faker.datatype.string(16);
+    const apikeyId = generateToken();
     temp_apiKeys = [...temp_apiKeys, apiKey(apikeyId, req.body.name)];
 
     // await wait(200);
@@ -110,6 +111,8 @@ app.get(
   // passport.authenticate("oauth-bearer", { session: false }),
   (req, res) => {
     console.log("/usage", req.authInfo);
+    // res.status(401).send("<html><body>unauthorized</body></html>")
+
     res.status(200).send({ ...sampleUsageData });
   }
 );
@@ -118,22 +121,23 @@ app.get(
   "/accounts",
   // passport.authenticate("oauth-bearer", { session: false }),
   async (req, res) => {
-    console.log("/accounts", req.authInfo);
-    await wait(15);
+    // await wait(15);
     res.status(200).send(getAccount());
+    // res.status(200).json({ accounts: [] });
   }
 );
 
 app.post(
   "/accounts",
+  cors({ origin: '*' }),
   // passport.authenticate("oauth-bearer", { session: false }),
   async (req, res) => {
-    //await wait(5);
     res.status(200).send(getAccount());
   }
 );
 
 app.get("/payments", (req, res) => {
+  // res.status(401).send("<html><body>unauthorized</body></html>")
   res.status(200).json({ ...getPaymentsInfo() });
 });
 
@@ -167,11 +171,7 @@ app.get("/testDB", async (req, res) => {
 
 app.get("/", (req, res) => res.send({ message: "hello" }));
 
-const port = process.env.PORT || 5000;
 
-app.listen(port, () => {
-  console.log("Listening on port " + port);
-});
 
 const getPaymentsInfo = () => {
   return {
@@ -202,13 +202,14 @@ const getPaymentsInfo = () => {
         status: "due",
         billing_date: "2022-05-01",
       },
-      ...Array.from({ length: 20 }).map((_, i) => ({
+      ...Array.from({ length: 40 }).map((_, i) => ({
         start_date: "2022-04-" + pad(i + 1),
         end_date: "2022-04-" + pad(i + 2),
         total_hrs: faker.datatype.number({ min: 0.1, max: 10 }),
         total_cost: faker.datatype.number({ min: 0.1, max: 10 }),
         status: "due",
         billing_date: "2022-05-01",
+        url: "https://www.chargifypay.com/invoice/inv_abcd4321?token=efgh8765"
       })),
     ],
   };
@@ -234,7 +235,7 @@ const wait = async (secs) => {
   );
 };
 
-let temp_apiKeys = [apiKey(), apiKey()];
+let temp_apiKeys = Array.from({ length: 3 }).map(_ => apiKey());
 
 const getAccount = () => ({
   accounts: [
@@ -253,11 +254,11 @@ const getAccount = () => ({
           usage_limits: [
             {
               name: "LIM_DUR_CUR_MON_STANDARD_SEC",
-              value: 10800,
+              value: 3600000,
             },
             {
               name: "LIM_DUR_CUR_MON_ENHANCED_SEC",
-              value: 10800,
+              value: 3600000,
             },
           ],
           projects: [
@@ -300,4 +301,11 @@ app.post("/beforeCreatingUserConnector", async (req, res) => {
     req.body.givenName,
     req.body.surname
   );*/
+});
+
+
+const port = process.env.PORT || 4444;
+
+app.listen(port, () => {
+  console.log("Listening on port " + port);
 });

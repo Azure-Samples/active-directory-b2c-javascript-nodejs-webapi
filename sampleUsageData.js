@@ -5,7 +5,7 @@ const sampleJson = {
     ...getUnit(`2022-01-01`, `2022-09-01`),
   },
   breakdown: [
-    ...Array.from({ length: 8 }).map((_, i) =>
+    ...Array.from({ length: 30 }).map((_, i) =>
       getUnit(`2022-0${i + 1}-01`, `2022-0${i + 2}-01`)
     ),
   ],
