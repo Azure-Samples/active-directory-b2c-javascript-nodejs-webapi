@@ -9,7 +9,7 @@ const BearerStrategy = require("passport-azure-ad").BearerStrategy;
 //   executeInsertStatement,
 // } = require("./database");
 const { sendUserToChargify } = require("./chargifyHandler");
-const sampleUsageData = require("./sampleUsageData");
+const aggregateUsage = require("./sampleUsageData");
 const faker = require("faker");
 
 // const options = {
@@ -110,9 +110,7 @@ app.get(
   "/usage",
   // passport.authenticate("oauth-bearer", { session: false }),
   (req, res) => {
-    console.log("/usage", req.authInfo);
-    // res.status(401).send("<html><body>unauthorized</body></html>")
-
+    const sampleUsageData = aggregateUsage(req.query.since, req.query.until)
     res.status(200).send({ ...sampleUsageData });
   }
 );
