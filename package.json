@@ -13,10 +13,10 @@
     "dev": "nodemon index.js"
   },
   "dependencies": {
+    "@faker-js/faker": "^6.3.1",
     "cors": "^2.8.5",
     "dotenv": "^14.2.0",
     "express": "^4.14.0",
-    "faker": "^5.5.3",
     "morgan": "^1.7.0",
     "node-fetch": "^2.6.7",
     "passport": "^0.4.1",
@@ -24,14 +24,6 @@
     "tedious": "^14.1.0"
   },
   "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Azure-Samples/active-directory-b2c-javascript-nodejs-webapi.git"
-  },
-  "bugs": {
-    "url": "https://github.com/Azure-Samples/active-directory-b2c-javascript-nodejs-webapi/issues"
-  },
-  "homepage": "https://github.com/Azure-Samples/active-directory-b2c-javascript-nodejs-webapi#readme",
   "devDependencies": {
     "nodemon": "^2.0.2"
   },
