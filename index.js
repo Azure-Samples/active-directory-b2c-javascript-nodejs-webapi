@@ -113,7 +113,7 @@ function generateJob() {
     "data_name": `${faker.lorem.slug()}.mp3`,
     "duration": faker.random.numeric(3),
     "id": faker.git.shortSha(),
-    "status": faker.helpers.arrayElement(['done', 'running', 'rejected'])
+    "status": faker.helpers.arrayElement(['running', 'running', 'running', 'running', 'done', 'rejected'])
   }
 }
 
