@@ -1,4 +1,4 @@
-const faker = require("faker");
+const { faker } = require("@faker-js/faker");
 
 function generateData() {
   const output = []
@@ -49,7 +49,7 @@ function getUnit(dateSince, dateUntil) {
 
 const usageBreakdown = generateData()
 
-function aggregateUsage (since, until) {
+function aggregate (since, until) {
 
   const sinceDate = new Date(since ? since : "1970-01-01")
 
@@ -106,4 +106,6 @@ function aggregateUsage (since, until) {
   }
 }
 
-module.exports = aggregateUsage;
+module.exports = {
+  aggregate
+};
