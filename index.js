@@ -1,7 +1,10 @@
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
-const aggregateUsage = require("./sampleUsageData");
+const {
+  usage,
+  jobs,
+} = require("./generators");
 const { faker } = require("@faker-js/faker");
 const { getPaymentsInfo, generateToken, apiKey, wait, getAccount } = require("./helpers");
 
@@ -53,7 +56,7 @@ app.delete(
 app.get(
   "/usage",
   (req, res) => {
-    const sampleUsageData = aggregateUsage(req.query.since, req.query.until)
+    const sampleUsageData = usage.aggregate(req.query.since, req.query.until)
     res.status(200).send({ ...sampleUsageData });
   }
 );
@@ -89,7 +92,9 @@ app.post("/jobs_key", (req, res) => {
 })
 
 app.get("/jobs", (req, res) => {
-  res.send({ jobs: Array.from({ length: 4 }).map(() => generateJob()) })
+  res.send({
+    jobs: jobs.list(req.query)
+  })
 })
 
 app.post("/jobs", (req, res) => {
@@ -97,25 +102,15 @@ app.post("/jobs", (req, res) => {
 })
 
 app.get("/jobs/:jobId", (req, res) => {
-  res.send(generateJob())
-})
-
-
-function generateJob() {
-  return {
-    "config": {
-      "transcription_config": {
-        "language": "en"
-      },
-      "type": "transcription"
-    },
-    "created_at": faker.date.past(),
-    "data_name": `${faker.lorem.slug()}.mp3`,
-    "duration": faker.random.numeric(3),
-    "id": faker.git.shortSha(),
-    "status": faker.helpers.arrayElement(['running', 'running', 'running', 'running', 'done', 'rejected'])
+  const job = jobs.getById(req.params.jobId)
+  if (job == null) {
+    res.status(404).send({code: 404, message: "No job with id: " + req.params.jobId})
+  } else {
+    res.send({
+      job
+    })
   }
-}
+})
 
 app.get("/jobs/:jobId/transcript", (req, res) => {
   res.send(faker.lorem.paragraph(4))
