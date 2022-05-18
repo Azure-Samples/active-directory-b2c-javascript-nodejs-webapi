@@ -89,7 +89,7 @@ app.post("/jobs_key", (req, res) => {
 })
 
 app.get("/jobs", (req, res) => {
-  res.send([generateJob(), generateJob(), generateJob()])
+  res.send({ jobs: Array.from({ length: 4 }).map(() => generateJob()) })
 })
 
 app.post("/jobs", (req, res) => {
