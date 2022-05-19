@@ -31,12 +31,12 @@ const jobsDB = generateList()
 function list(query) {
     let returnJobs = JSON.parse(JSON.stringify(jobsDB))
     if (query.created_before) {
-        returnJobs = jobsDB.filter(item => item.created_at < query.created_before)
+        returnJobs = returnJobs.filter(item => new Date(item.created_at) < new Date(query.created_before))
     }
     if (query.limit) {
-        returnJobs = jobsDB.slice(0, query.limit)
+        returnJobs = returnJobs.slice(0, query.limit)
     } else {
-        returnJobs = jobsDB.slice(0, 100)
+        returnJobs = returnJobs.slice(0, 100)
     }
     if (query.include_config === "false") {
         returnJobs = returnJobs.map(item => {
