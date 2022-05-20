@@ -127,7 +127,14 @@ app.delete("/jobs/:jobId", (req, res) => {
 })
 
 app.get("/jobs/:jobId/transcript", (req, res) => {
-  res.send(faker.lorem.paragraph(4))
+  const job = jobs.getById(req.params.jobId)
+  if (job == null) {
+    res.status(404).send({code: 404, message: "No job with id: " + req.params.jobId})
+  } else if ( req.query.format === 'json-v2' ) {
+    res.send(jobs.jsonTranscript)
+  } else {
+    res.send(faker.lorem.paragraph(35))
+  }
 })
 
 
