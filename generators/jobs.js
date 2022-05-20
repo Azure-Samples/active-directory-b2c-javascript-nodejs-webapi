@@ -22,11 +22,13 @@ function generateList() {
         jobs.push(generateJob())
     }
     return jobs.sort((a, b) => {
-        return b.created_at - a.created_at 
+        return new Date(b.created_at) - new Date(a.created_at) 
     })
 }
 
 const jobsDB = generateList()
+
+// console.log(jobsDB)
 
 function list(query) {
     let returnJobs = JSON.parse(JSON.stringify(jobsDB))
