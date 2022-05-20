@@ -1,6 +1,6 @@
 const { faker } = require("@faker-js/faker");
 
-function generateJob() {
+function generateJob(created_at=faker.date.past()) {
     return {
       "config": {
         "transcription_config": {
@@ -8,7 +8,7 @@ function generateJob() {
         },
         "type": "transcription"
       },
-      "created_at": faker.date.past(),
+      created_at: created_at.toISOString(),
       "data_name": `${faker.lorem.slug()}.mp3`,
       "duration": faker.random.numeric(3),
       "id": faker.git.shortSha(),
@@ -56,8 +56,29 @@ function getById(id) {
     return jobsDB.find(item => item.id == id)
 }
 
+function deleteById(id) {
+    const jobIndex = jobsDB.findIndex(item => item.id == id)
+    console.log(jobIndex)
+    if ( jobIndex === -1 ) {
+        throw { status: 404, message: "No job found" }
+    }
+    jobsDB.splice(jobIndex, 1)
+    return
+}
+
+function add() {
+    if ( jobsDB.length > 200 ) {
+        throw { status: 429, message: "too many jobs" }
+    }
+    const today = new Date()
+    jobsDB.splice(0, 0, generateJob(today))
+    return jobsDB[0].id
+}
+
 
 module.exports = {
     list,
-    getById
+    getById,
+    deleteById,
+    add,
 }
