@@ -77,10 +77,33 @@ function add() {
     return jobsDB[0].id
 }
 
+const jsonTranscript = {
+    "application/vnd.speechmatics.v2+json": {
+    "format": '2.7',
+    "job": {
+      created_at: "2018-01-09T12:29:01.853047Z",
+      data_name: "recording.mp3",
+      duration: 244,
+      id: "a1b2c3d4e5",
+      tracking: {
+        title: "ACME Q12018 Statement",
+        reference: "/data/clients/ACME/statements/segs/2018Q1-seg8",
+        tags: ['quick-review', 'segment'],
+        details: {
+          client: "ACME Corp",
+          segment: 8,
+          seg_start: 963.201,
+          seg_end: 1091.481
+        }
+      }
+    }
+  }
+}
 
 module.exports = {
     list,
     getById,
     deleteById,
     add,
+    jsonTranscript
 }
