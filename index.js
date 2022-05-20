@@ -98,7 +98,12 @@ app.get("/jobs", (req, res) => {
 })
 
 app.post("/jobs", (req, res) => {
-  res.send({ id: faker.git.shortSha() })
+  try {
+    const newId = jobs.add()
+    res.send({ id: newId })
+  } catch (error) {
+    res.status(error.status ? error.status : 500).send(error.message)
+  }
 })
 
 app.get("/jobs/:jobId", (req, res) => {
@@ -109,6 +114,15 @@ app.get("/jobs/:jobId", (req, res) => {
     res.send({
       job
     })
+  }
+})
+
+app.delete("/jobs/:jobId", (req, res) => {
+  try {
+    jobs.deleteById(req.params.jobId)
+    res.status(200).send({ id: req.params.jobId })
+  } catch (error) {
+    res.status(error.status ? error.status : 500).send(error.message)
   }
 })
 
