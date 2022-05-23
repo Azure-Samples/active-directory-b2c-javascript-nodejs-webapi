@@ -72,6 +72,7 @@ function add() {
     if (jobsDB.length > 200) {
         throw { status: 429, message: "too many jobs" }
     }
+    updateStatusOverTime();
     const today = new Date()
     jobsDB.splice(0, 0, generateJob(today))
     return jobsDB[0].id
@@ -101,17 +102,18 @@ const jsonTranscript = {
         }
     }
 }
-
+let interv = 0;
 function updateStatusOverTime() {
-    const interv = setInterval(() => {
+    clearInterval(interv); // clear any previous interval
+    interv = setInterval(() => {
         let foundOne = false;
         jobsDB.filter(el => el.status == 'running').forEach(el => {
             //todo could be something fancier with new Date(el.created_at)
             if (Math.random() > 0.5) el.status = 'done';
             foundOne = true;
         })
-        if (!foundOne) clearInterval(interv); // it does not take into consideration we could add new jobs later
-    }, 3000);
+        if (!foundOne) clearInterval(interv);
+    }, 5000);
 }
 updateStatusOverTime();
 
