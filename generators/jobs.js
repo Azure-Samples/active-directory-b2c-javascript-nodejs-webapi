@@ -110,7 +110,7 @@ function updateStatusOverTime() {
             if (Math.random() > 0.5) el.status = 'done';
             foundOne = true;
         })
-        if (!foundOne) clearInterval(interv);
+        if (!foundOne) clearInterval(interv); // it does not take into consideration we could add new jobs later
     }, 3000);
 }
 updateStatusOverTime();
