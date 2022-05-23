@@ -1,28 +1,28 @@
 const { faker } = require("@faker-js/faker");
 
-function generateJob(created_at=faker.date.past()) {
+function generateJob(created_at = faker.date.past()) {
     return {
-      "config": {
-        "transcription_config": {
-          "language": "en"
+        "config": {
+            "transcription_config": {
+                "language": "en"
+            },
+            "type": "transcription"
         },
-        "type": "transcription"
-      },
-      created_at: created_at.toISOString(),
-      "data_name": `${faker.lorem.slug()}.mp3`,
-      "duration": faker.random.numeric(3),
-      "id": faker.git.shortSha(),
-      "status": faker.helpers.arrayElement(['running', 'running', 'running', 'running', 'done', 'rejected'])
+        created_at: created_at.toISOString(),
+        "data_name": `${faker.lorem.slug()}.mp3`,
+        "duration": faker.random.numeric(3),
+        "id": faker.git.shortSha(),
+        "status": faker.helpers.arrayElement(['running', 'running', 'running', 'running', 'done', 'rejected'])
     }
 }
 
 function generateList() {
     const jobs = []
-    for ( let i = 0; i < 200; i++) {
+    for (let i = 0; i < 100; i++) {
         jobs.push(generateJob())
     }
     return jobs.sort((a, b) => {
-        return new Date(b.created_at) - new Date(a.created_at) 
+        return new Date(b.created_at) - new Date(a.created_at)
     })
 }
 
@@ -61,7 +61,7 @@ function getById(id) {
 function deleteById(id) {
     const jobIndex = jobsDB.findIndex(item => item.id == id)
     console.log(jobIndex)
-    if ( jobIndex === -1 ) {
+    if (jobIndex === -1) {
         throw { status: 404, message: "No job found" }
     }
     jobsDB.splice(jobIndex, 1)
@@ -69,7 +69,7 @@ function deleteById(id) {
 }
 
 function add() {
-    if ( jobsDB.length > 200 ) {
+    if (jobsDB.length > 200) {
         throw { status: 429, message: "too many jobs" }
     }
     const today = new Date()
@@ -77,28 +77,45 @@ function add() {
     return jobsDB[0].id
 }
 
+
+
 const jsonTranscript = {
     "application/vnd.speechmatics.v2+json": {
-    "format": '2.7',
-    "job": {
-      created_at: "2018-01-09T12:29:01.853047Z",
-      data_name: "recording.mp3",
-      duration: 244,
-      id: "a1b2c3d4e5",
-      tracking: {
-        title: "ACME Q12018 Statement",
-        reference: "/data/clients/ACME/statements/segs/2018Q1-seg8",
-        tags: ['quick-review', 'segment'],
-        details: {
-          client: "ACME Corp",
-          segment: 8,
-          seg_start: 963.201,
-          seg_end: 1091.481
+        "format": '2.7',
+        "job": {
+            created_at: "2018-01-09T12:29:01.853047Z",
+            data_name: "recording.mp3",
+            duration: 244,
+            id: "a1b2c3d4e5",
+            tracking: {
+                title: "ACME Q12018 Statement",
+                reference: "/data/clients/ACME/statements/segs/2018Q1-seg8",
+                tags: ['quick-review', 'segment'],
+                details: {
+                    client: "ACME Corp",
+                    segment: 8,
+                    seg_start: 963.201,
+                    seg_end: 1091.481
+                }
+            }
         }
-      }
     }
-  }
 }
+
+function updateStatusOverTime() {
+    const interv = setInterval(() => {
+        let foundOne = false;
+        jobsDB.filter(el => el.status == 'running').forEach(el => {
+            //todo could be something fancier with new Date(el.created_at)
+            if (Math.random() > 0.5) el.status = 'done';
+            foundOne = true;
+        })
+        if (!foundOne) clearInterval(interv);
+    }, 3000);
+}
+updateStatusOverTime();
+
+
 
 module.exports = {
     list,
