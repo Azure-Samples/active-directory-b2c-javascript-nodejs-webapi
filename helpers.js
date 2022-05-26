@@ -64,9 +64,8 @@ const wait = async (secs) => {
     );
 };
 
-let temp_apiKeys = Array.from({ length: 3 }).map(_ => apiKey());
 
-const getAccount = () => ({
+const getAccount = (temp_apiKeys) => ({
     accounts: [
         {
             account_id: 0,

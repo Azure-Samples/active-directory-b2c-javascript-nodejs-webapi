@@ -9,6 +9,9 @@ const { faker } = require("@faker-js/faker");
 const { getPaymentsInfo, generateToken, apiKey, wait, getAccount } = require("./helpers");
 const fileUpload = require('express-fileupload')
 
+let temp_apiKeys = Array.from({ length: 3 }).map(_ => apiKey());
+
+
 const app = express();
 
 app.use(express.json(
@@ -73,7 +76,7 @@ app.get(
   "/accounts",
   async (req, res) => {
     // await wait(15);
-    res.status(200).send(getAccount());
+    res.status(200).send(getAccount(temp_apiKeys));
     // res.status(200).json({ accounts: [] });
   }
 );
@@ -81,7 +84,7 @@ app.get(
 app.post(
   "/accounts",
   async (req, res) => {
-    res.status(200).send(getAccount());
+    res.status(200).send(getAccount(temp_apiKeys));
   }
 );
 
