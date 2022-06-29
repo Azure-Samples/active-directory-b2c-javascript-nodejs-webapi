@@ -36,6 +36,10 @@ app.use(fileUpload({
 app.post(
   "/api_keys",
   async (req, res) => {
+
+    // res.status(403).send('error')
+
+
     console.log("/api_keys");
     const apikeyId = generateToken();
     temp_apiKeys = [...temp_apiKeys, apiKey(apikeyId, req.body.name)];
@@ -53,6 +57,8 @@ app.delete(
   "/api_keys/:api_key_id",
   (req, res) => {
     console.log("delete /api_keys", req.params.api_key_id);
+
+
 
     temp_apiKeys = temp_apiKeys.filter(
       (key) => key.apikey_id != req.params.api_key_id
@@ -78,6 +84,8 @@ app.get(
     // await wait(15);
     res.status(200).send(getAccount(temp_apiKeys));
     // res.status(200).json({ accounts: [] });
+    // res.status(401).send();
+    // res.status(500).send('error')
   }
 );
 
@@ -108,13 +116,19 @@ app.get("/jobs", (req, res) => {
   })
 })
 
-app.post("/jobs", (req, res) => {
+app.post("/jobs", async (req, res) => {
   try {
     const newId = jobs.add()
+    // await wait(30);
     res.send({ id: newId })
   } catch (error) {
     res.status(error.status ? error.status : 500).send(error.message)
   }
+  /* res.status(403).send({
+    "code": 403,
+    "detail": "account is not allowed to create a job at the moment: This request would exceed your limit for Enhanced Model transcription in the current month. Your limit is 2 hours.",
+    "error": "Forbidden"
+  }) */
 })
 
 app.get("/jobs/:jobId", (req, res) => {
@@ -141,11 +155,12 @@ app.get("/jobs/:jobId/transcript", (req, res) => {
   const job = jobs.getById(req.params.jobId)
   if (job == null) {
     res.status(404).send({ code: 404, message: "No job with id: " + req.params.jobId })
-  } else if (req.query.format === 'json-v2') {
-    res.send(jobs.jsonTranscript)
-  } else {
+  } else if (req.query.format === 'txt') {
     res.send(faker.lorem.paragraph(35))
+  } else {
+    res.send(jobs.jsonTranscript)
   }
+
 })
 
 

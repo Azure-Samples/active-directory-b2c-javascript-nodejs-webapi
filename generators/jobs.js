@@ -12,13 +12,13 @@ function generateJob(created_at = faker.date.past()) {
         "data_name": `${faker.lorem.slug()}.mp3`,
         "duration": faker.random.numeric(3),
         "id": faker.git.shortSha(),
-        "status": faker.helpers.arrayElement(['running', 'running', 'running', 'running', 'done', 'rejected'])
+        "status": faker.helpers.arrayElement([...Array(6).fill('running'), 'done', /* 'rejected' */])
     }
 }
 
 function generateList() {
     const jobs = []
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 15; i++) {
         jobs.push(generateJob())
     }
     return jobs.sort((a, b) => {
@@ -81,27 +81,10 @@ function add() {
 
 
 const jsonTranscript = {
-    "application/vnd.speechmatics.v2+json": {
-        "format": '2.7',
-        "job": {
-            created_at: "2018-01-09T12:29:01.853047Z",
-            data_name: "recording.mp3",
-            duration: 244,
-            id: "a1b2c3d4e5",
-            tracking: {
-                title: "ACME Q12018 Statement",
-                reference: "/data/clients/ACME/statements/segs/2018Q1-seg8",
-                tags: ['quick-review', 'segment'],
-                details: {
-                    client: "ACME Corp",
-                    segment: 8,
-                    seg_start: 963.201,
-                    seg_end: 1091.481
-                }
-            }
-        }
-    }
+    // ...require('../static/vath9w1bs9.transcript.json')
+    ...require('../static/channels.transcript.json')
 }
+
 let interv = 0;
 function updateStatusOverTime() {
     clearInterval(interv); // clear any previous interval
