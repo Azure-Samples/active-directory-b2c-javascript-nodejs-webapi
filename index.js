@@ -58,21 +58,23 @@ app.delete(
   (req, res) => {
     console.log("delete /api_keys", req.params.api_key_id);
 
+    res.status(404).send('error')
 
 
-    temp_apiKeys = temp_apiKeys.filter(
+    /* temp_apiKeys = temp_apiKeys.filter(
       (key) => key.apikey_id != req.params.api_key_id
     );
 
     res.status(200).send({
       status: "ok",
-    });
+    }); */
   }
 );
 
 app.get(
   "/usage",
   (req, res) => {
+
     const sampleUsageData = usage.aggregate(req.query.since, req.query.until)
     res.status(200).send({ ...sampleUsageData });
   }
@@ -89,16 +91,32 @@ app.get(
   }
 );
 
+app.get("/contracts/:contractId/payment_token", async (req, res) => {
+  res.status(200).json({ payment_token: "payment_token" });
+
+})
+
+app.post("/contracts/:contractId/cards", async (req, res) => {
+  res.status(200).json({});
+})
+
+app.delete("/contracts/:contractId/cards", async (req, res) => {
+  res.status(200).json({});
+})
+
+
 app.post(
   "/accounts",
   async (req, res) => {
     res.status(200).send(getAccount(temp_apiKeys));
+    // res.status(403).send();
   }
 );
 
 app.get("/payments", (req, res) => {
   // res.status(401).send("<html><body>unauthorized</body></html>")
   res.status(200).json({ ...getPaymentsInfo() });
+  // res.status(500).text("error")
 });
 
 
