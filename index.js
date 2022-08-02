@@ -10,6 +10,7 @@ const { getPaymentsInfo, generateToken, apiKey, wait, getAccount } = require("./
 const fileUpload = require('express-fileupload')
 
 let temp_apiKeys = Array.from({ length: 3 }).map(_ => apiKey());
+let tempAccount = getAccount(temp_apiKeys);
 
 
 const app = express();
@@ -84,12 +85,17 @@ app.get(
   "/accounts",
   async (req, res) => {
     // await wait(15);
-    res.status(200).send(getAccount(temp_apiKeys));
+    res.status(200).send(tempAccount);
     // res.status(200).json({ accounts: [] });
     // res.status(401).send();
     // res.status(500).send('error')
   }
 );
+
+app.post("/mock/accounts", async (req, res) => {
+    tempAccount["accounts"][0]["contracts"][0]["state"] = req.query.state ? req.query.state : "active";
+    res.status(200).json({});
+})
 
 app.get("/contracts/:contractId/payment_token", async (req, res) => {
   res.status(200).json({ payment_token: "payment_token" });
@@ -130,7 +136,7 @@ app.post("/jobs_key", (req, res) => {
 
 app.get("/jobs", (req, res) => {
   res.send({
-    jobs: jobs.list(req.query)
+    jobs: []
   })
 })
 

@@ -89,6 +89,7 @@ const getAccount = (temp_apiKeys) => ({
                             value: 3600000,
                         },
                     ],
+                    state: "active",
                     projects: [
                         {
                             project_id: 0,
